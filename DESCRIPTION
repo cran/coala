@@ -1,6 +1,6 @@
 Package: coala
-Version: 0.1.0
-Date: 2015-07-14
+Version: 0.1.1
+Date: 2015-07-17
 License: MIT + file LICENSE
 Title: A Framework for Coalescent Simulation
 Authors@R: c(
@@ -40,9 +40,9 @@ Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'feature.R'
         'sumstat_omegaprime.R' 'sumstat_seg_sites.R' 'sumstat_sfs.R'
         'sumstat_tajimas_d.R' 'sumstat_trees.R' 'tempfile.R'
 NeedsCompilation: yes
-Packaged: 2015-07-14 11:26:34 UTC; paul
+Packaged: 2015-07-17 08:20:36 UTC; paul
 Author: Paul Staab [aut, cre, cph],
   Dirk Metzler [ths]
 Maintainer: Paul Staab <develop@paulstaab.de>
 Repository: CRAN
-Date/Publication: 2015-07-14 20:40:28
+Date/Publication: 2015-07-17 12:44:37
