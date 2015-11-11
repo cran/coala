@@ -35,7 +35,7 @@ test_that("msms can simulate seg. sites", {
   expect_equal(stats_1, stats_2)
   expect_that(stats_1$seg_sites, is_a("list"))
   expect_equal(length(stats_1$seg_sites), 2)
-  expect_equal(length(attr(stats_1$seg_sites[[1]], "positions")),
+  expect_equal(length(get_positions(stats_1$seg_sites[[1]])),
                ncol(stats_1$seg_sites[[1]]))
 
   # With recombination
@@ -103,33 +103,57 @@ test_that("msms_simulate works with inter-locus variation", {
 test_that("simulating unphased data works", {
   if (!has_msms()) skip("msms not installed")
   msms <- get_simulator("msms")
-  model <- model_theta_tau() + feat_unphased(2, 1) + sumstat_seg_sites()
-  stats <- msms$simulate(model, c(tau = 1, theta = 5))
-  expect_equal(dim(stats$jsfs), c(11, 16))
-  expect_equal(nrow(stats$seg_sites[[1]]), 25)
+  model <- coal_model(5, 2, ploidy = 2) +
+    feat_unphased(1) +
+    feat_mutation(4, fixed_number = TRUE) +
+    sumstat_seg_sites()
 
-  model <- model_theta_tau() + feat_unphased(3, 2) + sumstat_seg_sites()
-  stats <- msms$simulate(model, c(tau = 1, theta = 5))
-  expect_equal(dim(stats$jsfs), c(21, 31))
-  expect_equal(nrow(stats$seg_sites[[1]]), 50)
+  stats <- msms$simulate(model)
+  expect_equal(nrow(stats$seg_sites[[1]]), 5)
 })
 
 
 test_that("msms can simulate locus trios", {
   if (!has_msms()) skip("msms not installed")
   stat <- get_simulator("msms")$simulate(model_trios())
-  expect_that(attr(stat$seg_sites[[1]], "locus"), is_a("numeric"))
-  expect_true(all(attr(stat$seg_sites[[1]], "locus") %in% -1:1))
-  expect_true(all(attr(stat$seg_sites[[1]], "positions") >= 0))
-  expect_true(all(attr(stat$seg_sites[[1]], "positions") <= 1))
+  expect_that(get_trio_locus(stat$seg_sites[[1]]), is_a("numeric"))
+  expect_true(all(get_trio_locus(stat$seg_sites[[1]]) %in% -1:1))
+  expect_true(all(get_positions(stat$seg_sites[[1]]) >= 0))
+  expect_true(all(get_positions(stat$seg_sites[[1]]) <= 1))
 })
 
 
-test_that("ms can added manually", {
+test_that("msms can be added manually", {
   if (!has_msms()) skip("msms not installed")
   msms_jar <- get_simulator("msms")$get_info()["jar"]
   java <- get_simulator("msms")$get_info()["java"]
   activate_msms(msms_jar, java, 199)
   expect_equal(get_simulator("msms")$get_priority(), 199)
   expect_error(use_msms(tempfile("not-existant"), tempfile("not-existant")))
+})
+
+
+test_that("msms supports size changes in one pop models", {
+  if (!has_msms()) skip("msms not installed")
+
+  model <- coal_model(40, 1) +
+    feat_mutation(1) +
+    feat_size_change(0.1, population = 1, time = 0.1) +
+    sumstat_sfs()
+
+  stat <- get_simulator("msms")$simulate(model)
+  expect_that(stat$sfs, is_a("numeric"))
+})
+
+
+test_that("msms supports growth in one pop models", {
+  if (!has_msms()) skip("msms not installed")
+
+  model <- coal_model(40, 1) +
+    feat_mutation(1) +
+    feat_growth(0.1, population = 1, time = 0.1) +
+    sumstat_sfs()
+
+  stat <- get_simulator("msms")$simulate(model)
+  expect_that(stat$sfs, is_a("numeric"))
 })

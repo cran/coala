@@ -1,22 +1,41 @@
+#' Base Class for Summary Statistics
+#'
+#' If you want to create additional summary statistics for coala, create
+#' \pkg{R6} classes that inherit from this object.
+#'
+#' @export
 sumstat_class <- R6Class("sumstat",
   private = list(
     name = NA,
     req_files = FALSE,
     req_trees = FALSE,
-    req_segsites = FALSE
+    req_segsites = FALSE,
+    transformation = NULL
   ),
   public = list(
-    initialize = function(name) {
+    initialize = function(name, transformation) {
+      assert_that(is.character(name))
+      assert_that(length(name) == 1)
       private$name <- name
+
+      assert_that(is.function(transformation))
+      private$transformation <- transformation
     },
     calculate = function(seg_sites, trees, files, model) {
       stop("Overwrite this function with the calculation of the statistic.")
+    },
+    check = function(model) {
+      # Optional functions that checks if a model is compatible with the stat.
+      # Should throw an informative error if not.
+      # This gets executed before the stat is added to the model.
+      invisible(TRUE)
     },
     get_name = function() private$name,
     requires_files = function() private$req_files,
     requires_segsites = function() private$req_segsites,
     requires_trees = function() private$req_trees,
-    print = function() cat(class(self)[1], "\n")
+    print = function() cat(class(self)[1], "\n"),
+    transform = function(x) private$transformation(x)
   )
 )
 
@@ -30,6 +49,8 @@ create_sumstat_container <- function() list()
 
 # Add a summary statistic to a model
 add_to_model.sumstat <- function(sum_stat, model, feat_name) {
+  sum_stat$check(model)
+
   if (sum_stat$get_name() %in% names(model$sum_stats))
     stop("Can not add ", feat_name, " to model: ",
          "There is already a statistic with name ", sum_stat$get_name())
@@ -63,7 +84,9 @@ calc_sumstats <- function(seg_sites, trees, files, model,
   if (missing(pars)) pars <- numeric(0)
   stopifnot(is.model(model))
 
-  if (is.list(cmds)) cmds <- do.call(c, cmds)
+  if (is.list(cmds) && simulator$get_name() != "seqgen") {
+    cmds <- do.call(c, cmds)
+  }
 
   sum_stats <- list(pars = pars,
                     cmds = cmds,
@@ -80,11 +103,13 @@ calc_sumstats <- function(seg_sites, trees, files, model,
                                     get_ploidy(model),
                                     get_samples_per_ind(model))
     }
+
+    assert_that(all(vapply(seg_sites, is_segsites, logical(1))))
   }
 
   for (stat in model$sum_stats) {
-    sum_stats[[stat$get_name()]] <- stat$calculate(seg_sites, trees,
-                                                   files, model)
+    sum_stats[[stat$get_name()]] <-
+      stat$transform(stat$calculate(seg_sites, trees, files, model))
   }
 
   sum_stats

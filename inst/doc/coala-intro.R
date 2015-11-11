@@ -1,5 +1,5 @@
 ## ----installation, eval=FALSE--------------------------------------------
-#  vignette("installation", package = "coala")
+#  vignette("coala-install", package = "coala")
 
 ## ----create_model--------------------------------------------------------
 library(coala)

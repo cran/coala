@@ -1,5 +1,6 @@
-#include <Rcpp.h>
 #include <fstream>
+#include "../inst/include/coala.h"
+
 
 using namespace Rcpp;
 
@@ -7,12 +8,12 @@ using namespace Rcpp;
 // NumericVector
 // [[Rcpp::export]]
 NumericVector parse_ms_positions(const std::string line) {
-  std::stringstream stream(line);
-  std::vector<double> data;
-
-  if (line.substr(0, 11) != "positions: ") {
+  if (line.size() < 11 || line.substr(0, 11) != "positions: ") {
     stop("Failed to read positions from ms' output");
   }
+
+  std::stringstream stream(line);
+  std::vector<double> data;
 
   // Remove the 'positions: ' at the line's beginning
   stream.ignore(11);
@@ -68,16 +69,15 @@ List parse_ms_output(const List file_names,
         else if (line.substr(0, 9) == "segsites:") {
           // Rcout << "Parsing Seg. Sites" << std::endl;
           if (line.substr(0, 11) == "segsites: 0") {
-            NumericMatrix ss = NumericMatrix(individuals, 0);
-            ss.attr("positions") = NumericVector(0);
-            seg_sites[locus] = ss;
+            seg_sites[locus] =
+              coala::createSegsites(NumericMatrix(individuals, 0),
+                                    NumericVector(0));
           } else {
             std::getline(output, line);
 
             // Parse Seg.Sites
             NumericVector positions = parse_ms_positions(line);
             NumericMatrix ss(individuals, positions.size());
-            ss.attr("positions") = positions;
 
             for (size_t i = 0; i < individuals; ++i) {
               std::getline(output, line);
@@ -86,7 +86,8 @@ List parse_ms_output(const List file_names,
               }
             }
 
-            seg_sites[locus] = ss;
+            seg_sites[locus] =
+              coala::createSegsites(ss, positions, NumericVector(0), false);
           }
           std::getline(output, line);
         }

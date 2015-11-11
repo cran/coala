@@ -53,12 +53,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Introduction to Coala</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.1.1</em></h4>
+<h4 class="date"><em>coala 0.2.0</em></h4>
 </div>
 
 
 <p>Coalescent simulation refers to the idea of simulating the evolution of biological sequences like DNA by tracing their ancestry back in time. The <code>coala</code> package is an interface for calling a number of commonly used coalescent simulators from R. It should be able to use the simulator <code>scrm</code> out of the box. Other simulators need to be installed separately and must explicitly be activated. This is described in the <code>installation</code> vignette:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;installation&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;coala&quot;</span>)</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;coala-install&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;coala&quot;</span>)</code></pre>
 <p>In this introduction we’ll stick to using <code>scrm</code>.</p>
 <div id="creating-a-model" class="section level1">
 <h1>Creating a model</h1>
@@ -68,7 +68,7 @@ model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span cla
 <p>This creates a basic model with one population of constant size. One genetic locus for three haplotypes is sampled from the population.</p>
 <p>Printing the model gives a short summary of this content:</p>
 <pre class="sourceCode r"><code class="sourceCode r">model</code></pre>
-<pre><code>## Features: Sampling of 3 (pop 1) haploids at time par(0) 
+<pre><code>## Features: Sampling of 3 (pop 1) individuals with ploidy 1 at time par(0) 
 ## 
 ## Parameter: None
 ## 
@@ -93,7 +93,7 @@ model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span cla
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>)
 model</code></pre>
 <pre><code>## Features: 
-## * Sampling of 3 (pop 1) haploids at time par(0) 
+## * Sampling of 3 (pop 1) individuals with ploidy 1 at time par(0) 
 ## * Mutations with rate `` following a IFS mutation model
 ## 
 ## Parameter: None
@@ -128,7 +128,7 @@ model</code></pre>
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
 model</code></pre>
 <pre><code>## Features: 
-## * Sampling of 3 (pop 1) haploids at time par(0) 
+## * Sampling of 3 (pop 1) individuals with ploidy 1 at time par(0) 
 ## * Mutations with rate `` following a IFS mutation model
 ## * Generating Seg. Sites
 ## 
@@ -142,12 +142,13 @@ model</code></pre>
 ## Command: scrm 3 1 -t 1</code></pre>
 <p>This adds the <em>segregating sites</em> summary statistic to the model, which is a basic summary statistic in population genetics. Again, refer to <code>?sumstat_seg_sites</code> for details.</p>
 <p>Available summary statistics are:</p>
-<pre><code>##  [1] &quot;sumstat_dna&quot;            &quot;sumstat_file&quot;          
-##  [3] &quot;sumstat_four_gamete&quot;    &quot;sumstat_ihh&quot;           
-##  [5] &quot;sumstat_jsfs&quot;           &quot;sumstat_nSL&quot;           
-##  [7] &quot;sumstat_nucleotide_div&quot; &quot;sumstat_seg_sites&quot;     
-##  [9] &quot;sumstat_sfs&quot;            &quot;sumstat_tajimas_d&quot;     
-## [11] &quot;sumstat_trees&quot;</code></pre>
+<pre><code>##  [1] &quot;sumstat_class&quot;          &quot;sumstat_dna&quot;           
+##  [3] &quot;sumstat_file&quot;           &quot;sumstat_four_gamete&quot;   
+##  [5] &quot;sumstat_ihh&quot;            &quot;sumstat_jsfs&quot;          
+##  [7] &quot;sumstat_mcmf&quot;           &quot;sumstat_nucleotide_div&quot;
+##  [9] &quot;sumstat_omega&quot;          &quot;sumstat_seg_sites&quot;     
+## [11] &quot;sumstat_sfs&quot;            &quot;sumstat_tajimas_d&quot;     
+## [13] &quot;sumstat_trees&quot;</code></pre>
 </div>
 <div id="simulating-the-model" class="section level1">
 <h1>Simulating the model</h1>
@@ -160,12 +161,10 @@ sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</
 <pre><code>## [1] &quot;pars&quot;      &quot;cmds&quot;      &quot;simulator&quot; &quot;seg_sites&quot;</code></pre>
 <p>The structure in <code>sumstats$seg_sites</code> is given by the segregating sites statistic. It is again a list, where each entry represents one locus. For each locus, it contains a matrix as specified in <code>?sumstat_seg_sites</code>:</p>
 <pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre>
-<pre><code>##      0.104160596557338 0.422330062937971
-## [1,]                 0                 0
-## [2,]                 1                 1
-## [3,]                 1                 1
-## attr(,&quot;positions&quot;)
-## [1] 0.1041606 0.4223301</code></pre>
+<pre><code>##      0.1041606 0.4223301
+## [1,]         0         0
+## [2,]         1         1
+## [3,]         1         1</code></pre>
 </div>
 <div id="adding-loci" class="section level1">
 <h1>Adding Loci</h1>
@@ -173,7 +172,7 @@ sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_single</span>(<span class="dv">500</span>)
 model</code></pre>
 <pre><code>## Features: 
-## * Sampling of 3 (pop 1) haploids at time par(0) 
+## * Sampling of 3 (pop 1) individuals with ploidy 1 at time par(0) 
 ## * Mutations with rate `` following a IFS mutation model
 ## * Generating Seg. Sites
 ## 
@@ -190,19 +189,15 @@ model</code></pre>
 <p>Now the model consists of two loci, the first with length 1000, the second with 500. Simulation now produces a segregating sites list with two entries corresponding to the loci:</p>
 <pre class="sourceCode r"><code class="sourceCode r">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre>
-<pre><code>##      0.314476697520152 0.403476195308673
-## [1,]                 0                 0
-## [2,]                 0                 0
-## [3,]                 1                 1
-## attr(,&quot;positions&quot;)
-## [1] 0.3144767 0.4034762</code></pre>
+<pre><code>##      0.3144767 0.4034762
+## [1,]         0         0
+## [2,]         0         0
+## [3,]         1         1</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">2</span>]]</code></pre>
-<pre><code>##      0.919157979455971
-## [1,]                 1
-## [2,]                 0
-## [3,]                 0
-## attr(,&quot;positions&quot;)
-## [1] 0.919158</code></pre>
+<pre><code>##      0.919158
+## [1,]        1
+## [2,]        0
+## [3,]        0</code></pre>
 <p>Another possibility is to add multiple loci with the same length using <code>locus_averaged</code>, which gives better performance than adding the loci one by one. For example</p>
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_averaged</span>(<span class="dv">2</span>, <span class="dv">750</span>)
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)

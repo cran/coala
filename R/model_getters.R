@@ -54,9 +54,11 @@ get_parameter <- function(model) {
 #'
 #' @describeIn get_features Returns the length of the loci in a locus group
 #' @export
-get_locus_length <- function(model, locus=NULL, group=NULL, total=TRUE) {
-  assert_that(!(is.null(locus) & is.null(group)))
+get_locus_length <- function(model, locus = NULL, group = NULL, total = TRUE) {
   llm <- get_locus_length_matrix(model)
+  if (is.null(locus) & is.null(group)) {
+    group <- 1:nrow(llm)
+  }
 
   # Group and locus are identical for ilv models
   if (!is.null(group) && has_variation(model)) {
@@ -68,10 +70,9 @@ get_locus_length <- function(model, locus=NULL, group=NULL, total=TRUE) {
     group <- get_locus_group(model, locus)
   }
 
-  ll <- llm[group, 1:5]
-  if (total) return(sum(ll))
-  if (sum(ll[-3]) == 0) return(ll[3])
-  ll
+  if (total) return(rowSums(llm[group, 1:5, drop = FALSE]))
+  if (sum(llm[group , c(1:2, 4:5)]) == 0) return(llm[group , 3])
+  llm[group, 1:5]
 }
 
 
@@ -128,15 +129,29 @@ get_locus_number <- function(model, group = NA, ignore_variation = FALSE) {
 
 
 #' @describeIn get_features Returns the index of the individuals of one
-#'   population
+#'   population. Ignores outgroups, so that it can be used for indexing
+#'   segregating sites.
 #' @param zero_indexed If true, the names of the populations are started from
 #'   0 instead of from 1.
+#' @param haploids If \code{TRUE}, the function always returns all haploids
+#'   from the population, even if the model is polyploid.
 #' @export
-get_population_indiviuals <- function(model, pop, zero_indexed = FALSE) {
-  if (pop == "all") return(1:sum(get_sample_size(model)))
+get_population_indiviuals <- function(model, pop,
+                                      zero_indexed = FALSE,
+                                      haploids = TRUE) {
+
+  sample_size <- get_sample_size(model)
+  outgroup <- get_outgroup(model)
+
+  if (!is.na(outgroup)) {
+    if (pop == outgroup) stop("Calculating summary statistics for the outgroup")
+    sample_size[outgroup] <- 0
+  }
+
+  if (!haploids) sample_size <- sample_size / get_ploidy(model)
+  if (pop == "all") return(1:sum(sample_size))
 
   if (!pop %in% get_populations(model)) stop("Invalid population")
-  sample_size <- get_sample_size(model)
   from <- cumsum(c(0, sample_size)) + 1
   to <- cumsum(sample_size)
   from[pop]:to[pop]

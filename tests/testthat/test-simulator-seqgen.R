@@ -1,198 +1,149 @@
 context("Simulator seqgen")
 
-test_that("parse_sg_output works with a single file", {
-  # --- One Group -----------------------------------------------
-  model_base <- coal_model(c(4, 6, 1)) +
-    feat_outgroup(3) +
-    feat_pop_merge(par_range("tau", 0.5, 2), 2, 1) +
-    feat_pop_merge(par_expr("2*tau"), 3, 1)
+test_that("it parses seqgen output", {
+  output <- c(" 11 10",
+              "s11       AATTTTGCCT",
+              "s2        TTCCCAAGTT",
+              "s4        TTCACAAGTG",
+              "s1        TTCCCAAGTG",
+              "s3        TTCCTAAGTG",
+              "s5        TCGGAAGCAG",
+              "s7        TCGGAAGCAG",
+              "s6        CCGGAAGCCT",
+              "s8        GCGGAAGCCT",
+              "s9        CCGGCTGCAG",
+              "s10       CCTCAGGGCC",
+              " 11 10",
+              "11        ATTGAACCGC",
+              "5         GTATATTTAC",
+              "9         GAATATGAAG",
+              "6         CTATATTTAG",
+              "8         CTAAATGAGG",
+              "7         CTATATGAAC",
+              "10        CTATATGAAC",
+              "1         CCATACGATA",
+              "2         CTTGACGGTA",
+              "3         GCAGACGGTA",
+              "4         GCTGATAATA")
 
-  model_tmp <- model_base + locus_averaged(2, 10)
+  sequence <- parse_seqgen_output(output, individuals = 11, locus_length = 10,
+                                  locus_number = 2, outgroup_size = 1,
+                                  calc_segsites = FALSE)
+  expect_equivalent(sequence, list(matrix(c(4, 4, 2, 2, 2, 1, 1, 3, 4, 3,
+                                            4, 4, 2, 2, 2, 1, 1, 3, 4, 4,
+                                            4, 4, 2, 2, 4, 1, 1, 3, 4, 3,
+                                            4, 4, 2, 1, 2, 1, 1, 3, 4, 3,
+                                            4, 2, 3, 3, 1, 1, 3, 2, 1, 3,
+                                            2, 2, 3, 3, 1, 1, 3, 2, 2, 4,
+                                            4, 2, 3, 3, 1, 1, 3, 2, 1, 3,
+                                            3, 2, 3, 3, 1, 1, 3, 2, 2, 4,
+                                            2, 2, 3, 3, 2, 4, 3, 2, 1, 3,
+                                            2, 2, 4, 2, 1, 3, 3, 3, 2, 2,
+                                            1, 1, 4, 4, 4, 4, 3, 2, 2, 4),
+                                          11, 10, byrow = TRUE),
+                                   matrix(c(2, 2, 1, 4, 1, 2, 3, 1, 4, 1,
+                                            2, 4, 4, 3, 1, 2, 3, 3, 4, 1,
+                                            3, 2, 1, 3, 1, 2, 3, 3, 4, 1,
+                                            3, 2, 4, 3, 1, 4, 1, 1, 4, 1,
+                                            3, 4, 1, 4, 1, 4, 4, 4, 1, 2,
+                                            2, 4, 1, 4, 1, 4, 4, 4, 1, 3,
+                                            2, 4, 1, 4, 1, 4, 3, 1, 1, 2,
+                                            2, 4, 1, 1, 1, 4, 3, 1, 3, 3,
+                                            3, 1, 1, 4, 1, 4, 3, 1, 1, 3,
+                                            2, 4, 1, 4, 1, 4, 3, 1, 1, 2,
+                                            1, 4, 4, 3, 1, 1, 2, 2, 3, 2),
+                                          11, 10, byrow = TRUE)))
 
-  seqgen_file <- tempfile("seqgen_parser_test")
-  cat(" 11 10
-      s11       AATTTTGCCT
-      s2        TTCCCAAGTT
-      s4        TTCACAAGTG
-      s1        TTCCCAAGTG
-      s3        TTCCTAAGTG
-      s5        TCGGAAGCAG
-      s7        TCGGAAGCAG
-      s6        CCGGAAGCCT
-      s8        GCGGAAGCCT
-      s9        CCGGCTGCAG
-      s10       CCTCAGGGCC
-      11 10
-      s11       ATTGAACCGC
-      s5        GTATATTTAC
-      s9        GAATATGAAG
-      s6        CTATATTTAG
-      s8        CTAAATGAGG
-      s7        CTATATGAAC
-      s10       CTATATGAAC
-      s1        CCATACGATA
-      s2        CTTGACGGTA
-      s3        GCAGACGGTA
-      s4        GCTGATAATA", file = seqgen_file)
 
-  seg_sites <- parse_sg_output(list(seqgen_file), 11,
-                               get_locus_length_matrix(model_tmp), 2)
-  expect_is(seg_sites, "list")
-  expect_equal(length(seg_sites), 2)
+  seg_sites <- parse_seqgen_output(output, individuals = 11, locus_length = 10,
+                                   locus_number = 2, outgroup_size = 1,
+                                   calc_segsites = TRUE)
 
-  seg_sites_1 <- matrix(c(1, 1, 1, 1, 1, 1, 1,
-                          1, 1, 1, 1, 1, 1, 0,
-                          1, 0, 1, 1, 1, 1, 1,
-                          1, 1, 1, 1, 1, 1, 1,
-                          1, 1, 1, 0, 0, 1, 1,
-                          1, 1, 1, 0, 0, 0, 0,
-                          1, 1, 1, 0, 0, 1, 1,
-                          1, 1, 1, 0, 0, 0, 0,
-                          1, 1, 0, 0, 0, 1, 1,
-                          0, 1, 1, 0, 1, 0, 1),
-                        10, 7, byrow = TRUE)
-  attr(seg_sites_1, "positions") <- c(2, 4:9) / 9
+  seg_sites_1 <- create_segsites(matrix(c(1, 1, 1, 1, 1, 1, 1,
+                                          1, 1, 1, 1, 1, 1, 0,
+                                          1, 0, 1, 1, 1, 1, 1,
+                                          1, 1, 1, 1, 1, 1, 1,
+                                          1, 1, 1, 0, 0, 1, 1,
+                                          1, 1, 1, 0, 0, 0, 0,
+                                          1, 1, 1, 0, 0, 1, 1,
+                                          1, 1, 1, 0, 0, 0, 0,
+                                          1, 1, 0, 0, 0, 1, 1,
+                                          0, 1, 1, 0, 1, 0, 1),
+                                        10, 7, byrow = TRUE),
+                                 c(2, 4:9) / 9)
   expect_equal(seg_sites[[1]], seg_sites_1)
 
-  seg_sites_2 <- matrix(c(1, 1, 1, 1, 1,
-                          0, 0, 0, 1, 1,
-                          1, 1, 0, 1, 1,
-                          1, 0, 0, 1, 1,
-                          0, 1, 1, 1, 0,
-                          0, 1, 1, 1, 1,
-                          0, 1, 1, 1, 0,
-                          0, 1, 1, 0, 1,
-                          1, 1, 1, 1, 1,
-                          0, 1, 1, 1, 0),
-                        10, 5, byrow = TRUE)
-  attr(seg_sites_2, "positions") <- c(1, 2, 3, 8, 9) / 9
+  seg_sites_2 <- create_segsites(matrix(c(1, 1, 1, 1, 1,
+                                          0, 0, 0, 1, 1,
+                                          1, 1, 0, 1, 1,
+                                          1, 0, 0, 1, 1,
+                                          0, 1, 1, 1, 0,
+                                          0, 1, 1, 1, 1,
+                                          0, 1, 1, 1, 0,
+                                          0, 1, 1, 0, 1,
+                                          1, 1, 1, 1, 1,
+                                          0, 1, 1, 1, 0),
+                                        10, 5, byrow = TRUE),
+                                 c(1, 2, 3, 8, 9) / 9)
   expect_equal(seg_sites[[2]], seg_sites_2)
 
-  # get DNA
-  seg_sites <- parse_sg_output(list(seqgen_file), 11,
-                               get_locus_length_matrix(model_tmp), 2,
-                               calc_seg_sites = FALSE)
-  expect_is(seg_sites, "list")
-  expect_equal(length(seg_sites), 2)
-  expect_true(all(seg_sites[[1]] %in% 1:4))
 
   # With outgroup of multiple individuals
-  seg_sites <- parse_sg_output(list(seqgen_file), 11,
-                               get_locus_length_matrix(model_tmp),
-                               2, outgroup_size = 3)
+  seg_sites <- parse_seqgen_output(output, individuals = 11, locus_length = 10,
+                                   locus_number = 2, outgroup_size = 3,
+                                   calc_segsites = TRUE)
+
   seg_sites_o1 <- seg_sites_1[1:8, 4, drop = FALSE]
-  attr(seg_sites_o1, "positions") <- attr(seg_sites_1, "positions")[4]
-  expect_equal(seg_sites[[1]], seg_sites_o1)
+  expect_equivalent(seg_sites[[1]], seg_sites_o1)
 
   seg_sites_o2 <- seg_sites_1[1:8, c(), drop = FALSE]
-  attr(seg_sites_o2, "positions") <- attr(seg_sites_1, "positions")[c()]
-  expect_equal(seg_sites[[2]], seg_sites_o2)
-
-  # With trios
-  expect_error(parse_sg_output(list(c(seqgen_file, seqgen_file, seqgen_file)),
-                               11, matrix(10, 2, 5, byrow = TRUE), 2))
-
-  seg_sites <- parse_sg_output(list(c(seqgen_file, seqgen_file, seqgen_file)),
-                               11, matrix(10, 2, 6, byrow = TRUE), 2)
-  expect_equal(seg_sites[[1]][, 1:7], seg_sites_1[, ])
-  expect_equal(seg_sites[[1]][, 8:14], seg_sites_1[, ])
-  expect_equal(seg_sites[[1]][, 15:21], seg_sites_1[, ])
-  expect_equal(attr(seg_sites[[1]], "locus"), rep(c(-1,0,1), each = 7))
-  expect_equal(attr(seg_sites[[1]], "positions"), rep(c(2, 4:9) / 9, 3))
-  expect_equal(seg_sites[[2]][, 1:5], seg_sites_2[, ])
-  expect_equal(seg_sites[[2]][, 6:10], seg_sites_2[, ])
-  expect_equal(seg_sites[[2]][, 11:15], seg_sites_2[, ])
-  expect_equal(attr(seg_sites[[2]], "locus"), rep(c(-1,0,1), each = 5))
-  expect_equal(attr(seg_sites[[2]], "positions"), rep(c(1, 2, 3, 8, 9) / 9, 3))
-
-
-
-  # --- Multiple Group -----------------------------------------------
-  # Multiple loci with different length
-  model_tmp <- coal_model(c(4, 6, 1)) +
-    locus_averaged(2, 10) + locus_single(8) +
-    feat_outgroup(3) +
-    feat_pop_merge(par_range("tau", 0.5, 2), 2, 1) +
-    feat_pop_merge(par_expr("2*tau"), 3, 1)
-
-  seqgen_file_1 <- tempfile("seqgen_parser_test")
-  cat(" 11 10
-      s11       AATTTTGCCT
-      s2        TTCCCAAGTT
-      s4        TTCACAAGTG
-      s1        TTCCCAAGTG
-      s3        TTCCTAAGTG
-      s5        TCGGAAGCAG
-      s7        TCGGAAGCAG
-      s6        CCGGAAGCCT
-      s8        GCGGAAGCCT
-      s9        CCGGCTGCAG
-      s10       CCTCAGGGCC", file = seqgen_file_1)
-
-  seqgen_file_2 <- tempfile("seqgen_parser_test")
-  cat(" 11 8
-      s11       ATTGAACC
-      s5        GTATATTT
-      s9        GAATATGA
-      s6        CTATATTT
-      s8        CTAAATGA
-      s7        CTATATGA
-      s10       CTATATGA
-      s1        CCATACGA
-      s2        CTTGACGG
-      s3        GCAGACGG
-      s4        GCTGATAA", file = seqgen_file_2)
-  seg_sites_2 <- seg_sites_2[ , 1:3]
-
-  seg_sites <- parse_sg_output(list(seqgen_file_1,
-                                    seqgen_file_1,
-                                    seqgen_file_2),
-                               sum(get_sample_size(model_tmp)),
-                               get_locus_length_matrix(model_tmp),
-                               get_locus_number(model_tmp))
-
-  expect_is(seg_sites, "list")
-  expect_equal(length(seg_sites), 3)
-  expect_equivalent(seg_sites[[1]], seg_sites_1)
-  expect_equivalent(seg_sites[[2]], seg_sites_1)
-  expect_equivalent(seg_sites[[3]], seg_sites_2)
-
-  # with trios
-  model_tmp <- model_base +
-    locus_trio(locus_length = c(10, 10, 8), distance = 1:2, number = 2) +
-    locus_trio(locus_length = c(10, 8, 8), distance = 1:2, number = 1)
-
-  files <- list(c(seqgen_file_1, seqgen_file_1, seqgen_file_2),
-                c(seqgen_file_1, seqgen_file_1, seqgen_file_2),
-                c(seqgen_file_1, seqgen_file_2, seqgen_file_2))
-
-  seg_sites <- parse_sg_output(files, sum(get_sample_size(model_tmp)),
-                               get_locus_length_matrix(model_tmp),
-                               get_locus_number(model_tmp))
-
-  expect_equal(seg_sites[[1]][,], cbind(seg_sites_1, seg_sites_1, seg_sites_2))
-  expect_equal(length(attr(seg_sites[[1]], "locus")), ncol(seg_sites[[1]]))
-  expect_equal(length(attr(seg_sites[[1]], "positions")), ncol(seg_sites[[1]]))
+  expect_equivalent(seg_sites[[2]], seg_sites_o2)
 
   # Unexpected sequence character
-  cat(" 11 10
-s11       AATTTTGCCT
-s2        TTCCCAAGTT
-s4        TTCACAAGTG
-s1        TTCCCAAGTG
-s3        TTCCTAAGTG
-s5        TCGGAAGCAG
-s7        TCGGAAGCAG
-s6        CCGGAAGCCT
-s8        GCGGAAGCCT
-s9        CCGGNTGCAG
-s10       CCTCAGGGCC", file = seqgen_file)
-  capture.output(
-    expect_error(parse_sg_output(list(seqgen_file), 11,
-                                 get_locus_length_matrix(model_tmp), 1))
-  )
+  capture.output({
+    expect_error(parse_seqgen_output(c(" 1 2", "1         AX"),
+                                     1, 2, 1, 0, FALSE))
+  }, type = "message")
 
-  unlink(c(seqgen_file, seqgen_file_1, seqgen_file_2))
+  # False sequence length
+  #expect_error(parse_seqgen_output(c(" 1 3", "1         AAA"),
+  #                                 1, 2, 1, 0, FALSE))
+  #expect_error(parse_seqgen_output(c(" 1 1", "1         A"),
+  #                                 1, 2, 1, 0, FALSE))
+
+  # False number of individuals
+  expect_error(parse_seqgen_output(c(" 1 3", "1         AAA"),
+                                   2, 3, 1, 0, FALSE))
+  expect_error(parse_seqgen_output(c(" 2 1", "1         A", "2         G"),
+                                   1, 1, 1, 0, FALSE))
+
+  # False locus number
+  expect_error(parse_seqgen_output(c(" 1 3", "1         AAA"),
+                                   1, 3, 2, 0, FALSE))
+  expect_error(parse_seqgen_output(c(" 1 3", "1         AAA",
+                                     " 1 3", "1         AAA"),
+                                   1, 3, 1, 0, FALSE))
+
+  # No outgroup
+  expect_error(parse_seqgen_output(c(" 2 1", "1         A", "2         G"),
+                                   2, 1, 1, 0, TRUE))
+
+
+})
+
+
+test_that("it parses seqgen output with split sequences", {
+  output <- c(" 2 10",
+              "s1        AAAAA", "AAAAA",
+              "s2        GGGGG", "GGGGG",
+              " 2 10",
+              "s1        AAAAAAAA", "AA",
+              "s2        GGGGGGGG", "GG")
+  sequence <- parse_seqgen_output(output, individuals = 2, locus_length = 10,
+                                  locus_number = 2, outgroup_size = 0,
+                                  calc_segsites = FALSE)
+  expect_equivalent(sequence, list(matrix(c(1, 3), 2, 10),
+                                   matrix(c(1, 3), 2, 10)))
 })
 
 
@@ -238,6 +189,14 @@ test_that("simulation with seq-gen works", {
 })
 
 
+test_that("seqgen simulates long sequences", {
+  if (!has_seqgen()) skip("seqgen not installed")
+  sg <- get_simulator("seqgen")
+  stat <- sg$simulate(model_hky() + locus_single(10000), c(tau = 1, theta = 5))
+  expect_true(sum(stat$jsfs) > 1)
+})
+
+
 test_that("All example models can be simulated", {
   if (!has_seqgen()) skip("seqgen not installed")
   set.seed(12)
@@ -270,7 +229,7 @@ test_that("test.seqgenWithMsms", {
 
   set.seed(4444)
   sum.stats2 <- simulate(m1, pars = c(1, 5))
-  expect_equal(sum.stats2, sum.stats)
+  expect_equal(sum.stats2$jsfs, sum.stats$jsfs)
 
   # With interlocus variation
   m2 <- model_hky() +
@@ -360,16 +319,15 @@ test_that("seqgen works with inter-locus variation", {
 test_that("simulating unphased data works", {
   if (!has_seqgen()) skip("seq-gen not installed")
   sg <- get_simulator("seqgen")
-
-  model <- model_hky() + feat_unphased(2, 1) + sumstat_seg_sites()
-  stats <- sg$simulate(model, c(tau = 1, theta = 10))
-  expect_equal(dim(stats$jsfs), c(4, 4))
-  expect_equal(nrow(stats$seg_sites[[1]]), 6)
-
-  model <- model_hky() + feat_unphased(2, 2) + sumstat_seg_sites()
-  stats <- sg$simulate(model, c(tau = 1, theta = 10))
-  expect_equal(dim(stats$jsfs), c(7, 7))
-  expect_equal(nrow(stats$seg_sites[[1]]), 12)
+  model <- coal_model(c(5, 1), 2, ploidy = 2) +
+    feat_outgroup(2) +
+    feat_pop_merge(1.0, 2, 1) +
+    feat_mutation(5, model = "GTR", gtr_rates = 1:6) +
+    feat_unphased(1) +
+    sumstat_seg_sites()
+  stats <- sg$simulate(model)
+  expect_equal(nrow(stats$seg_sites[[1]]), 5)
+  expect_equal(nrow(stats$seg_sites[[2]]), 5)
 })
 
 
@@ -434,4 +392,33 @@ test_that("seqgen works with zero inflation", {
 
   stats <- simulate(model)
   expect_is(stats, "list")
+})
+
+
+test_that("seqgen command are added to the output", {
+  if (!has_seqgen()) skip("seqgen not installed")
+
+  model <- model_hky()
+  output <- get_simulator("seqgen")$simulate(model, c(tau = 1, theta = 5))
+  expect_true(is.list(output$cmds))
+  expect_equal(length(output$cmds), 2)
+  expect_true(grepl("^seq-gen ", output$cmds$seqgen[[1]]))
+
+  model <- model_hky() + locus_single(10)
+  output <- get_simulator("seqgen")$simulate(model, c(tau = 1, theta = 5))
+  expect_true(is.list(output$cmds))
+  expect_equal(length(output$cmds), 2)
+  expect_equal(length(output$cmd$seqgen), 2)
+  expect_equal(length(output$cmd$seqgen[[1]]), 1)
+  expect_equal(length(output$cmd$seqgen[[2]]), 1)
+  expect_true(grepl("^seq-gen ", output$cmds$seqgen[[2]]))
+
+  model <- model_hky() + locus_trio()
+  output <- get_simulator("seqgen")$simulate(model, c(tau = 1, theta = 5))
+  expect_true(is.list(output$cmds))
+  expect_equal(length(output$cmds), 2)
+  expect_equal(length(output$cmd$seqgen), 2)
+  expect_equal(length(output$cmd$seqgen[[1]]), 1)
+  expect_equal(length(output$cmd$seqgen[[2]]), 3)
+  expect_true(all(grepl("^seq-gen ", output$cmds$seqgen[[2]])))
 })

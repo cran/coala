@@ -1,13 +1,14 @@
 #' @importFrom R6 R6Class
 stat_dna_class <- R6Class("dna_stat", inherit = sumstat_class,
-  private = list(req_files = TRUE),
+  private = list(),
   public = list(
-    calculate = function(seg_sites, trees, files, model) {
-      dna <- parse_sg_output(files,
-                            sum(get_sample_size(model, for_sim = TRUE)),
-                            get_locus_length_matrix(model),
-                            get_locus_number(model),
-                            calc_seg_sites = FALSE)
+    calculate = function(seg_sites, trees, dna, model) {
+      if (requires_segsites(model)) {
+        stop("Can not generate both seg. sites and DNA")
+      }
+      if (has_trios(model)) {
+        stop("Cannot generate DNA for trio models")
+      }
       lapply(dna, function(locus) {
         apply(locus, 2, function(x) attr(locus, "levels")[x])
       })
@@ -19,6 +20,6 @@ stat_dna_class <- R6Class("dna_stat", inherit = sumstat_class,
 #'
 #' @inheritParams sumstat_four_gamete
 #' @export
-sumstat_dna <- function(name = "dna") {
-  stat_dna_class$new(name) #nolint
+sumstat_dna <- function(name = "dna", transformation = identity) {
+  stat_dna_class$new(name, transformation)
 }

@@ -2,12 +2,11 @@ context("Simulator ms")
 
 
 test_that("parsing positions works", {
-  positions <- rep(0, 10)
-  positions <- parse_ms_positions("positions: 0.0010 0.0474 0.3171")
-  expect_equal(positions, c(0.001, 0.0474, 0.3171))
+  expect_equal(parse_ms_positions("positions: 0.0010 0.0474 0.3171"),
+               c(0.001, 0.0474, 0.3171))
+  expect_equal(parse_ms_positions("positions: 0.1 0.2 0.3 0.4 0.5"), 1:5/10)
+  expect_equal(parse_ms_positions("positions: 0.1"), 0.1)
 
-  expect_equal(length(parse_ms_positions("positions: 0.1 0.2 0.3 0.4 0.5")), 5)
-  expect_equal(length(parse_ms_positions("positions: 0.1")), 1)
   expect_error(parse_ms_positions("0.1 0.2 0.3"))
   expect_error(parse_ms_positions(" "))
   expect_error(parse_ms_positions("segsites: 0"))
@@ -43,10 +42,13 @@ positions: 0.3718 0.8443
 
   output <- parse_ms_output(list(sim_output), 3, 2)
 
-  ss1 <- matrix(c(0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0), 3, 5)
-  attr(ss1, "positions") <- c(0.2046, 0.2234, 0.2904, 0.6209, 0.9527)
-  ss2 <- matrix(c(0, 0, 1, 1, 1, 0), 3, 2)
-  attr(ss2, "positions") <- c(0.3718, 0.8443)
+
+  ss1 <- create_segsites(matrix(c(0, 1, 1, 0, 0,
+                                  1, 0, 0, 1, 1,
+                                  0, 1, 1, 0, 0), 3, 5, TRUE),
+                         c(0.2046, 0.2234, 0.2904, 0.6209, 0.9527))
+
+  ss2 <- create_segsites(matrix(c(0, 0, 1, 1, 1, 0), 3, 2), c(0.3718, 0.8443))
 
   trees1 <- c("[2](2:0.865,(1:0.015,3:0.015):0.850);",
               "[3](2:0.865,(1:0.015,3:0.015):0.850);",
@@ -96,7 +98,7 @@ test_that("msms can simulate seg. sites", {
   expect_equal(stats_1, stats_2)
   expect_that(stats_1$seg_sites, is_a("list"))
   expect_equal(length(stats_1$seg_sites), 2)
-  expect_equal(length(attr(stats_1$seg_sites[[1]], "positions")),
+  expect_equal(length(get_positions(stats_1$seg_sites[[1]])),
                ncol(stats_1$seg_sites[[1]]))
 
   # With recombination
@@ -171,15 +173,14 @@ test_that("simulating unphased data works", {
   if (!has_ms()) skip("ms not installed")
   ms <- get_simulator("ms")
 
-  model <- model_theta_tau() + feat_unphased(2, 1) + sumstat_seg_sites()
-  stats <- ms$simulate(model, c(tau = 1, theta = 5))
-  expect_equal(dim(stats$jsfs), c(11, 16))
-  expect_equal(nrow(stats$seg_sites[[1]]), 25)
+  model <- coal_model(3, 2, ploidy = 2) +
+    feat_unphased(1) +
+    feat_mutation(4, fixed_number = TRUE) +
+    sumstat_seg_sites()
 
-  model <- model_theta_tau() + feat_unphased(3, 2) + sumstat_seg_sites()
-  stats <- ms$simulate(model, c(tau = 1, theta = 5))
-  expect_equal(dim(stats$jsfs), c(21, 31))
-  expect_equal(nrow(stats$seg_sites[[1]]), 50)
+  stats <- ms$simulate(model)
+  expect_equal(nrow(stats$seg_sites[[1]]), 3)
+  expect_equal(nrow(stats$seg_sites[[2]]), 3)
 })
 
 
@@ -187,10 +188,10 @@ test_that("ms can simulate locus trios", {
   if (!has_ms()) skip("ms not installed")
   stat <- get_simulator("ms")$simulate(model_trios())
 
-  expect_that(attr(stat$seg_sites[[1]], "locus"), is_a("numeric"))
-  expect_true(all(attr(stat$seg_sites[[1]], "locus") %in% -1:1))
-  expect_true(all(attr(stat$seg_sites[[1]], "positions") >= 0))
-  expect_true(all(attr(stat$seg_sites[[1]], "positions") <= 1))
+  expect_that(get_trio_locus(stat$seg_sites[[1]]), is_a("numeric"))
+  expect_true(all(get_trio_locus(stat$seg_sites[[1]]) %in% -1:1))
+  expect_true(all(get_positions(stat$seg_sites[[1]]) >= 0))
+  expect_true(all(get_positions(stat$seg_sites[[1]]) <= 1))
 })
 
 

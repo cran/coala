@@ -84,7 +84,11 @@ test_that("get loci length and number works", {
   expect_equivalent(get_locus_length(model, 24, total = FALSE),
                     c(1, 10, 2, 11, 3))
 
-  expect_error(get_locus_length(model))
+  expect_equal(get_locus_length(model, total = TRUE), c(101, 102, 27))
+  expect_equivalent(get_locus_length(model, total = FALSE),
+                    matrix(c(0, 0, 101, 0, 0,
+                             0, 0, 102, 0, 0,
+                             1, 10, 2, 11, 3), 3, byrow = TRUE))
 })
 
 
@@ -115,26 +119,6 @@ test_that("locus length matrix generations works", {
 })
 
 
-test_that("Adding and Getting inter locus variation works", {
-  skip("Interlocus variation needs to be reworked")
-  expect_false(has_variation(model_theta_tau()))
-
-  #model_tmp <- model_theta_tau() + feat_recombination(5, variance = 3)
-  #expect_true(has_variation(model_tmp))
-})
-
-
-test_that("setTrioMutationsRates works", {
-  warning("test about model with trio mutation rates deactivated")
-#   model <- model.setTrioMutationRates(model_trios, "17", "theta", group=2)
-#   expect_equal(nrow(search_feature(model, "mutation", group=2)), 1)
-#   expect_equal(search_feature(model, "mutation", group=2)$parameter, "17")
-#   expect_equal(nrow(search_feature(model, "mutation_outer", group=2)), 1)
-#   expect_equal(search_feature(model, "mutation_outer", group=2)$parameter,
-#                "theta")
-})
-
-
 test_that("getting the available Populations works", {
   model <- coal_model(10:11, 100)
   expect_equal(get_populations(model), 1:2)
@@ -151,9 +135,27 @@ test_that("get population individuals works", {
   expect_error(get_population_indiviuals(model_theta_tau(), 3))
   expect_error(get_population_indiviuals(model_theta_tau(), "al"))
 
+  # With an outgroup
+  expect_equal(get_population_indiviuals(model_hky(), "all"), 1:6)
   expect_equal(get_population_indiviuals(model_hky(), 1), 1:3)
   expect_equal(get_population_indiviuals(model_hky(), 2), 4:6)
-  expect_equal(get_population_indiviuals(model_hky(), 3), 7)
+  expect_error(get_population_indiviuals(model_hky(), 3))
+
+  model <- coal_model(1:3) + feat_outgroup(2)
+  expect_equal(get_population_indiviuals(model, "all"), 1:4)
+  expect_equal(get_population_indiviuals(model, 1), 1)
+  expect_error(get_population_indiviuals(model, 2))
+  expect_equal(get_population_indiviuals(model, 3), 2:4)
+})
+
+
+test_that("getting indiviuals in polyploid models works", {
+  model <- coal_model(1:5, ploidy = 2)
+  expect_equal(get_population_indiviuals(model, 1, haploids = FALSE), 1)
+  expect_equal(get_population_indiviuals(model, 2, haploids = FALSE), 2:3)
+  expect_equal(get_population_indiviuals(model, 3, haploids = FALSE), 4:6)
+  expect_equal(get_population_indiviuals(model, 4, haploids = FALSE), 7:10)
+  expect_equal(get_population_indiviuals(model, 5, haploids = FALSE), 11:15)
 })
 
 
@@ -164,11 +166,11 @@ test_that("getting the ploidy and individuals works", {
   sample_size <- get_sample_size(model)
   expect_false(is_unphased(model))
 
-  model <- model_theta_tau() + feat_unphased(4, 2)
+  model <- coal_model(sample_size, ploidy = 4) + feat_unphased(2)
   expect_equal(get_ploidy(model), 4L)
   expect_equal(get_samples_per_ind(model), 2L)
   expect_equal(get_sample_size(model), sample_size * 2)
-  expect_equal(get_sample_size(model, TRUE), sample_size * 4)
+  expect_equal(get_sample_size(model, for_sim = TRUE), sample_size * 4)
   expect_true(is_unphased(model))
 })
 

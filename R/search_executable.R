@@ -6,16 +6,22 @@
 #' name equal to to binaries name in upper case is given, it also
 #' tries to use this as path of the binary.
 #'
-#'  @param name The name of the executable to look for
-#'  @param envir_var the name of the environment variable to use
-#'  @return The complete path of the executable is found, or "NULL" if not.
+#' @param name The name of the executable to look for
+#' @param envir_var the name of the environment variable to use
+#' @return The complete path of the executable is found, or "NULL" if not.
 search_executable <- function(name, envir_var = NULL) {
   # See if an environment variable is given
   exe <- NULL
 
   if (!is.null(envir_var)) {
     exe_path <- Sys.getenv(envir_var)
-    if (exe_path != "" && file.exists(exe_path)) return(exe_path)
+    if (exe_path != "") {
+      if (!file.exists(exe_path)) {
+        warning("Can not find ", name, " executable at '", exe_path, "'")
+      } else {
+        return(exe_path)
+      }
+    }
   }
 
   # Try to find it in the PATH folders and the Working directory
