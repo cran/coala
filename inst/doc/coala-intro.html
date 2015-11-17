@@ -53,7 +53,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Introduction to Coala</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.2.0</em></h4>
+<h4 class="date"><em>coala 0.2.1</em></h4>
 </div>
 
 
@@ -68,7 +68,7 @@ model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span cla
 <p>This creates a basic model with one population of constant size. One genetic locus for three haplotypes is sampled from the population.</p>
 <p>Printing the model gives a short summary of this content:</p>
 <pre class="sourceCode r"><code class="sourceCode r">model</code></pre>
-<pre><code>## Features: Sampling of 3 (pop 1) individuals with ploidy 1 at time par(0) 
+<pre><code>## Features: Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
 ## 
 ## Parameter: None
 ## 
@@ -93,8 +93,8 @@ model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span cla
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>)
 model</code></pre>
 <pre><code>## Features: 
-## * Sampling of 3 (pop 1) individuals with ploidy 1 at time par(0) 
-## * Mutations with rate `` following a IFS mutation model
+## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
+## * Mutations with rate `1` following a IFS mutation model
 ## 
 ## Parameter: None
 ## 
@@ -128,8 +128,8 @@ model</code></pre>
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
 model</code></pre>
 <pre><code>## Features: 
-## * Sampling of 3 (pop 1) individuals with ploidy 1 at time par(0) 
-## * Mutations with rate `` following a IFS mutation model
+## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
+## * Mutations with rate `1` following a IFS mutation model
 ## * Generating Seg. Sites
 ## 
 ## Parameter: None
@@ -158,7 +158,7 @@ model</code></pre>
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</code></pre>
 <p>The returned object <code>sumstats</code> a list, in which each entry corresponds to one summary statistic. As there is only one summary statistic in our model, it has only one entry:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(sumstats)</code></pre>
-<pre><code>## [1] &quot;pars&quot;      &quot;cmds&quot;      &quot;simulator&quot; &quot;seg_sites&quot;</code></pre>
+<pre><code>## [1] &quot;seg_sites&quot; &quot;pars&quot;      &quot;cmds&quot;      &quot;simulator&quot;</code></pre>
 <p>The structure in <code>sumstats$seg_sites</code> is given by the segregating sites statistic. It is again a list, where each entry represents one locus. For each locus, it contains a matrix as specified in <code>?sumstat_seg_sites</code>:</p>
 <pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre>
 <pre><code>##      0.1041606 0.4223301
@@ -172,8 +172,8 @@ sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_single</span>(<span class="dv">500</span>)
 model</code></pre>
 <pre><code>## Features: 
-## * Sampling of 3 (pop 1) individuals with ploidy 1 at time par(0) 
-## * Mutations with rate `` following a IFS mutation model
+## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
+## * Mutations with rate `1` following a IFS mutation model
 ## * Generating Seg. Sites
 ## 
 ## Parameter: None

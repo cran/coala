@@ -17,13 +17,13 @@ print.segsites <- function(x, ...) {
 #' @export
 as.matrix.segsites <- function(x, ...) get_snps(x)
 
-
 #' @export
 dim.segsites <- function(x) dim(get_snps(x))
 
 
 
-
+#' @describeIn create_segsites Checks whether an object is a segsites object.
+#' @export
 is_segsites <- function(segsites) inherits(segsites, "segsites")
 
 
@@ -49,7 +49,14 @@ conv_to_ms_output <- function(segsites) {
 }
 
 
-create_trios <- function(left, middle, right) {
+
+#' Combines three segregating sites to a locus trio
+#'
+#' @param left The segregating sites from the left locus
+#' @param middle The segregating sites from the middle locus
+#' @param right The segregating sites from the right locus
+create_locus_trio <- function(left, middle, right) {
+  assert_that(is.list(left) && is.list(middle) && is.list(right))
   assert_that(length(left) == length(middle))
   assert_that(length(left) == length(right))
 
