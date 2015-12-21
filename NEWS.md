@@ -1,3 +1,30 @@
+coala 0.3.0
+===========
+
+## Major improvements
+* Support for more selection models, including ones for local adaptation (#137).
+* Add `as.segsites.GENOME` function that converts genetic data imported with
+  the package PopGenome to coala's format (#139).
+
+## Small Changes
+* Adds `feat_ignore_singletons`, which is a feature that makes coala ignore 
+  singletons when calculating the summary statistics (#138).
+* Use `ms` from package `phyclust` instead of requiring that the binary is
+  installed on the system (#140).
+* Ensure that msms uses only one CPU core (#142).
+
+
+
+coala 0.2.2
+===========
+
+* Fixes the broken nucleotide diversity and Tajima's D summary statistics
+  (#133).
+* Adds support for calculating joint frequency spectra for more than two 
+  populations (#132).
+  
+
+
 coala 0.2.1
 ===========
 
