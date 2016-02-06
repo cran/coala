@@ -12,17 +12,15 @@ sim_data <- simulate(model, nsim = 2000, seed = 17)
 
 ## ------------------------------------------------------------------------
 # Getting the parameters
-sim_pars <- matrix(sapply(sim_data, function(x) x$pars), 2000, 1)
-colnames(sim_pars) <- "theta"
-head(sim_pars, n = 3)
+sim_param <- create_abc_param(sim_data, model)
+head(sim_param, n = 3)
 
 # Getting the summary statistics
-sim_sumstats <- t(sapply(sim_data, function(x) x$sfs))
-colnames(sim_sumstats) <- paste0("S", 1:9)
-head(sim_sumstats, n = 3)
+sim_sumstat <- create_abc_sumstat(sim_data, model)
+head(sim_sumstat, n = 3)
 
 ## ----abc, fig.align="center", fig.width=5--------------------------------
 suppressPackageStartupMessages(library(abc))
-posterior <- abc(sfs, sim_pars, sim_sumstats, 0.05, method = "rejection")
-hist(posterior, breaks = 10)
+posterior <- abc(sfs, sim_param, sim_sumstat, 0.05, method = "rejection")
+hist(posterior, breaks = 20)
 

@@ -53,14 +53,14 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Adding Summary Statistics and Simulators</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.3.0</em></h4>
+<h4 class="date"><em>coala 0.4.0</em></h4>
 </div>
 
 
 <p>Coala uses a modular system based on <a href="https://cran.r-project.org/package=R6">R6 Classes</a> for integrating summary statistics and coalescent simulators. This document contains instructions on adding both.</p>
 <div id="summary-statistics" class="section level2">
 <h2>Summary Statistics</h2>
-<p>Summary statistics are derived from the <code>sumstat_class</code> base class. They primarily consists of a <code>calculate</code> function that – well – calculates the statistics value from the simulation results. A simple example is the <code>sumstat_seg_sites()</code> statistic:</p>
+<p>Summary statistics are derived from the <code>sumstat_class</code> base class. They primarily consist of a <code>calculate</code> function that – well – calculates the statistics value from the simulation results. A simple example is the <code>sumstat_seg_sites()</code> statistic:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(R6)
 <span class="kw">library</span>(coala)
 stat_segsites_class &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;stat_segsites&quot;</span>, <span class="dt">inherit =</span> sumstat_class,
@@ -73,19 +73,19 @@ stat_segsites_class &lt;-<span class="st"> </span><span class="kw">R6Class</span
 sumstat_seg_sites &lt;-<span class="st"> </span>function(<span class="dt">name =</span> <span class="st">&quot;seg_sites&quot;</span>, <span class="dt">transformation =</span> identity) {
   stat_segsites_class$<span class="kw">new</span>(name, transformation)
 }</code></pre>
-<p>The calculate function must have four arguments. It is called after the simulation with the following arguments:</p>
+<p>The calculate is called after the simulation with the following arguments:</p>
 <ul>
-<li>First, a list of segregating sites, were each entry of the list contains the segregating sites for a locus.</li>
+<li>First, a list of segregating sites, where each entry of the list contains the segregating sites of a locus.</li>
 <li>Second, a list of trees currently in Newick format.</li>
 <li>Third, the raw output files from the simulator.</li>
 <li>Finally, the model that was simulated.</li>
 </ul>
-<p>Only the model is always passed to <code>calculate</code>. The other three inputs are generated on demand and have to be requested by the statistic. To do so, set the private variable <code>req_segsites</code>, <code>req_trees</code> or <code>req_files</code>, respectively, to <code>TRUE</code>. Arguments not request can be present if they are created for a different summary statistic, but will be <code>NULL</code> in most cases.</p>
-<p>In this example, we only use the segregating sites, and hence it is the only argument request. All the summary statistic does is to return the unmodified segregating sites.</p>
+<p>Among the above mentioned parameters, model is always passed to the calculate function. The other three input parameters are generated on demand and have to be requested by the statistic. To do so, set the private variables <code>req_segsites</code>, <code>req_trees</code> or <code>req_files</code>, respectively, to <code>TRUE</code>. Arguments not requested can be present if they are created for a different summary statistic, but will be <code>NULL</code> in most cases.</p>
+<p>In this example we only use the segregating sites, and hence it is the only argument request. All that the summary statistic does is to return the unmodified segregating sites.</p>
 <p>Warning: I am currently only satisfied with the structure of the segregating sites. The format of the <code>trees</code> and the <code>files</code> arguments might still change.</p>
 <div id="adding-a-constructor" class="section level3">
 <h3>Adding A Constructor</h3>
-<p>If the statistic has additional options that can be set on creation, overwrite the <code>initialize</code> function. Take, for example a simplified version of <code>sumstat_file</code>:</p>
+<p>If the statistic has additional options that can be set on creation, overwrite the <code>initialize</code> function. Take, for example, a simplified version of <code>sumstat_file</code>:</p>
 <pre class="sourceCode r"><code class="sourceCode r">stat_file_class &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;stat_file&quot;</span>, <span class="dt">inherit =</span> sumstat_class,
   <span class="dt">private =</span> <span class="kw">list</span>(<span class="dt">folder =</span> <span class="ot">NULL</span>, <span class="dt">req_files =</span> <span class="ot">TRUE</span>),
   <span class="dt">public =</span> <span class="kw">list</span>(
@@ -106,7 +106,7 @@ sumstat_seg_sites &lt;-<span class="st"> </span>function(<span class="dt">name =
 <div id="simulators" class="section level2">
 <h2>Simulators</h2>
 <p>Adding support for new coalescent simulators is more difficult than adding summary statistics. If you are planning to do so, I highly recommend to open an <a href="https://github.com/statgenlmu/coala/issues/new">issue</a> in coala’s bug tracker first, so that I can assist with the implementation.</p>
-<p>The most important part is to create a <code>simulate</code> function that the model and the model parameters as arguments, conducts the simulation and parses the output to create the <code>segsites</code> and/or <code>trees</code> argument for the summary statistics. It should throw an error with <code>stop()</code> if it gets a model that is not supported.</p>
+<p>The most important part is to create a <code>simulate</code> function that the model and the model parameters as arguments, conducts the simulation and parses the output to create the <code>segsites</code> and/or <code>trees</code> argument for the summary statistics. It should throw an error with <code>stop()</code> if it is given a model which is not supported.</p>
 </div>
 
 

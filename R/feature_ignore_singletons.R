@@ -9,17 +9,21 @@ ign_singletons_class <- R6Class("ign_singletons", inherit = feature_class)
 #' singletons from the simulated data before the summary statistics are
 #' calculated.
 #'
-#' For this function, a singleton a mutation for which the derived allele is
-#' observed exactly once in all populations.
+#' This function assumes that a singleton is a mutation for which the derived
+#' allele is observed exactly once in all sequences, regardless of the
+#' population structure.
 #'
 #' @return The feature, which can be added to a model using `+`.
 #' @export
+#' @family features
 #' @examples
 #' model <- coal_model(2, 1) +
 #'   feat_mutation(10) +
 #'   feat_ignore_singletons() +
 #'   sumstat_sfs("n_mut", transformation = sum)
-#' simulate(model)$n_mut # Is 0, because all SNPs are singletons in this model
+#' # In this model, all mutations are singletons. Therefore,
+#' # the number of mutations is 0 when removing singletons:
+#' simulate(model)$n_mut
 feat_ignore_singletons <- function() {
   ign_singletons_class$new()
 }

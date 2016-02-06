@@ -17,47 +17,21 @@ generate_trio_trees <- function(trees, llm) {
     .Call('coala_generate_trio_trees', PACKAGE = 'coala', trees, llm)
 }
 
-#' Segregating Sites
-#'
-#' This functions allow the creation and modification of segregating sites
-#' objects, which are one of the most basic intermediary statistics that is
-#' calculated in coala. Segregating sites are primarily SNP matrix that
-#' contains all SNPs for one locus, with some additional information attached.
-#' The parts of the S3 class are detailed below.
-#'
-#' A segregating sites object contains all SNPs for one genetic locus. Each
-#' object consists of tree parts: A SNP matrix, a vector of SNP positons and
-#' a vector that states which transcript a SNP belong to, if the locus
-#' consists of multiple transscripts ('locus trio').
-#'
-#' \itemize{
-#'   \item{In the \strong{SNP} matrix, each row represents a haplotype and each
-#'         column represents a SNP. An entry is either \code{1} if the
-#'         haplotype carries the derived allele for the SNP, or \code{0} if it
-#'         carries the ancestral one.}
-#'   \item{In the \strong{positions} vector, each entry gives the relative
-#'         position of SNP in the corresponding column of the SNP matrix.}
-#'   \item{The \strong{trio_locus} vector contains the trio locus each SNP
-#'         belongs to. Entry of \code{-1},\code{0}, \code{1} represent the
-#'         left, middle, and right locus, respectively. For normal loci,
-#'         this just consists of \code{0}'s}
-#' }
+#' @describeIn segsites Creates segregating sites
 #'
 #' @param snps The SNP Matrix (see Details).
 #' @param positions A numeric vector indicating the relative positions of each
 #'   SNP on the locus (see Details).
 #' @param trio_locus If the locus consists of a locus trio (see Details).
-#' @param check Whether non-segregating sites are remove from the segregating
+#' @param check Whether non-segregating sites are removed from the segregating
 #'   sites (\code{TRUE}) or not (\code{FALSE}).
 #' @export
-#' @aliases segsites
-#' @author Paul Staab
 #'
 create_segsites <- function(snps, positions, trio_locus = numeric(0), check = TRUE) {
     .Call('coala_create_segsites', PACKAGE = 'coala', snps, positions, trio_locus, check)
 }
 
-#' @describeIn create_segsites Returns the SNP matrix from a segregating sites
+#' @describeIn segsites Returns the SNP matrix from a segregating sites
 #'  object.
 #'
 #' @param segsites The segregating sites object
@@ -66,28 +40,28 @@ get_snps <- function(segsites) {
     .Call('coala_get_snps', PACKAGE = 'coala', segsites)
 }
 
-#' @describeIn create_segsites Returns the SNP's positions from a segregating
+#' @describeIn segsites Returns the SNP's positions from a segregating
 #'   sites  object.
 #' @export
 get_positions <- function(segsites) {
     .Call('coala_get_positions', PACKAGE = 'coala', segsites)
 }
 
-#' @describeIn create_segsites Sets the SNP's positions in a segregating
+#' @describeIn segsites Sets the SNP's positions in a segregating
 #'   sites object.
 #' @export
 set_positions <- function(segsites, positions) {
     .Call('coala_set_positions', PACKAGE = 'coala', segsites, positions)
 }
 
-#' @describeIn create_segsites Returns the trio locus positions from a
+#' @describeIn segsites Returns the trio locus positions from a
 #'   segregating sites  object.
 #' @export
 get_trio_locus <- function(segsites) {
     .Call('coala_get_trio_locus', PACKAGE = 'coala', segsites)
 }
 
-#' @describeIn create_segsites Sets the trio locus in a segregating sites
+#' @describeIn segsites Sets the trio locus in a segregating sites
 #'   object.
 #' @export
 set_trio_locus <- function(segsites, trio_locus) {
@@ -98,14 +72,15 @@ calc_four_gamete_stat <- function(seg_sites_list, individuals, locus_length) {
     .Call('coala_calc_four_gamete_stat', PACKAGE = 'coala', seg_sites_list, individuals, locus_length)
 }
 
-#' Calculates the JSFS
+#' Calculates the Joint Site Frequency Spectrum
 #'
 #' @param segsites_list List of segregating sites
 #' @param ind_per_pop A list of integer vector, where each entry gives the
 #'   index of the haploids that belong the corresponding population.
-#' @export
+#'
 #' @author Paul Staab & Dirk Metzler
 #' @return The Joint Site Frequency Spectrum, as a matrix.
+#' @keywords internal
 calc_jsfs <- function(segsites_list, ind_per_pop) {
     .Call('coala_calc_jsfs', PACKAGE = 'coala', segsites_list, ind_per_pop)
 }

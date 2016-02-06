@@ -53,25 +53,26 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Importing Genetic Data into Coala</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.3.0</em></h4>
+<h4 class="date"><em>coala 0.4.0</em></h4>
 </div>
 
 
-<p>While <code>coala</code> primiary focuses on simulation of data, it also offers to calculate summary statsitcs from real data. This is particular useful when comparing the statistics of real and simulated data.</p>
-<p>Rather than offering function to import data directly, coala can convert the internal formats of other packages into its own format. Currently, only <code>PopGenome</code> is supported, but we plan to also support <code>ape</code> and <code>pegas</code> in the future.</p>
+<p>While <code>coala</code> primiary focuses on simulation of data, it also offers to calculate summary statsitcs from real data. This is particularly useful when comparing the statistics of real and simulated data.</p>
+<p>Rather than offering functions to import data directly, coala can convert the internal formats of other R packages into its own format. Currently, the <code>PopGenome</code> package is supported, but we plan to support <code>ape</code> and <code>pegas</code> in the future.</p>
 <div id="importing-data-from-popgenome" class="section level2">
 <h2>Importing Data from PopGenome</h2>
-<p>PopGenome offers functions for reading different data formats, including <code>vcf</code> and <code>fasta</code>. Please refer to its documentation for instructions. As example, we will read in one short fasta file that is included in coala:</p>
+<p><code>PopGenome</code> provides functions for reading various data formats, including <code>vcf</code> and <code>fasta</code>. Please refer to its documentation for detailed instructions. As an example, we will read sequence data from a short fasta file that is included in coala:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(PopGenome))
 fasta &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;example_fasta_files&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;coala&quot;</span>)
 data_pg &lt;-<span class="st"> </span><span class="kw">readData</span>(fasta, <span class="dt">progress_bar_switch =</span> <span class="ot">FALSE</span>)
 data_pg &lt;-<span class="st"> </span><span class="kw">set.outgroup</span>(data_pg, <span class="kw">c</span>(<span class="st">&quot;Individual_Out-1&quot;</span>, <span class="st">&quot;Individual_Out-2&quot;</span>))
 individuals &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">paste0</span>(<span class="st">&quot;Individual_1-&quot;</span>, <span class="dv">1</span>:<span class="dv">5</span>), <span class="kw">paste0</span>(<span class="st">&quot;Individual_2-&quot;</span>, <span class="dv">1</span>:<span class="dv">5</span>))
 data_pg &lt;-<span class="st"> </span><span class="kw">set.populations</span>(data_pg, individuals)</code></pre>
+<p>Here the sequences originate from two population and an outgroup. The outgroup is required for most summary statistics.</p>
 <p>We can now convert <code>data_pg</code> using the <code>as.segsites</code> function:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(coala)
 segsites &lt;-<span class="st"> </span><span class="kw">as.segsites</span>(data_pg)</code></pre>
-<p>Now, we can calculate summary statistics using <code>calc_sumstats_from_data</code>:</p>
+<p>Next, we calculate summary statistics using <code>calc_sumstats_from_data</code>:</p>
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">2</span>), <span class="dv">1</span>, <span class="dv">25</span>) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dv">5</span>) +
 <span class="st">  </span><span class="kw">feat_outgroup</span>(<span class="dv">3</span>) +

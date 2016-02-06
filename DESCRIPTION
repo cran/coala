@@ -1,6 +1,5 @@
 Package: coala
-Version: 0.3.0
-Date: 2015-12-20
+Version: 0.4.0
 License: MIT + file LICENSE
 Title: A Framework for Coalescent Simulation
 Authors@R: c(
@@ -23,17 +22,17 @@ Suggests: abc (>= 2.0), knitr, PopGenome (>= 2.1.0), phyclust (>=
         0.1-16), rmarkdown, testthat (>= 0.11.0)
 LinkingTo: Rcpp, RcppArmadillo (>= 0.3.810.0)
 VignetteBuilder: knitr
-Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'feature.R'
+Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'model.R' 'feature.R'
         'feature_growth.R' 'feature_ignore_singletons.R'
         'feature_migration.R' 'feature_mutation.R' 'feature_outgroup.R'
         'feature_pop_merge.R' 'feature_recombination.R'
         'feature_sample.R' 'feature_selection.R'
         'feature_size_change.R' 'feature_sumstats.R'
-        'feature_unphased.R' 'import_popgenome.R' 'locus.R' 'model.R'
-        'model_build.R' 'model_check.R' 'model_examples.R'
+        'feature_unphased.R' 'import_popgenome.R' 'interface_abc.R'
+        'locus.R' 'model_build.R' 'model_check.R' 'model_examples.R'
         'model_getters.R' 'model_print.R' 'model_scale.R'
-        'model_simulate.R' 'onLoad.R' 'par_zero_inflation.R'
-        'parameter.R' 'parameter_prior.R' 'parameter_variation.R'
+        'model_simulate.R' 'onLoad.R' 'parameter.R' 'parameter_prior.R'
+        'parameter_variation.R' 'parameter_zero_inflation.R'
         'sample_seed.R' 'search_executable.R' 'segsites.R'
         'simulator_class.R' 'simulator_ms.R' 'simulator_msms.R'
         'simulator_scrm.R' 'simulator_seqgen.R' 'sumstat.R'
@@ -44,9 +43,9 @@ Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'feature.R'
         'sumstat_trees.R' 'tools.R'
 RoxygenNote: 5.0.1
 NeedsCompilation: yes
-Packaged: 2015-12-21 10:29:32 UTC; paul
+Packaged: 2016-02-06 10:29:07 UTC; paul
 Author: Paul Staab [aut, cre],
   Dirk Metzler [aut, ths]
 Maintainer: Paul Staab <develop@paulstaab.de>
 Repository: CRAN
-Date/Publication: 2015-12-21 12:16:26
+Date/Publication: 2016-02-06 12:17:38

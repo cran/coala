@@ -2,7 +2,7 @@
 % Please edit documentation in R/feature_selection.R
 \name{feat_selection}
 \alias{feat_selection}
-\title{Adds positive selection to a model}
+\title{Feature: Selection}
 \usage{
 feat_selection(strength_AA = 0, strength_Aa = 0, strength_aa = 0,
   strength_A = NULL, population = "all", time, start = TRUE,
@@ -11,16 +11,16 @@ feat_selection(strength_AA = 0, strength_Aa = 0, strength_aa = 0,
 }
 \arguments{
 \item{strength_AA}{The selection strength for the selected homozygote.
-The parameter is valid for the choosen population and the time further
-pastwards from either time 0 on if \code{start = TRUE}, or from \code{time}
+The parameter is valid for the chosen population and the time further
+past-wards from either time 0 on if \code{start = TRUE}, or from \code{time}
 onwards. The same applies for \code{strength_Aa}, \code{strength_aa} and
 \code{strength_A}.}
 
 \item{strength_Aa}{The selection strength for the heterozygote.}
 
-\item{strength_aa}{The selection strength for the recessive homoygote.}
+\item{strength_aa}{The selection strength for the recessive homozygote.}
 
-\item{strength_A}{This sets the strength for the selected allele in an
+\item{strength_A}{This sets the strength for the selected allele in a
 haploid model or a diploid model with additive selection.
 \code{strength_AA}, \code{strength_Aa}, \code{strength_aa}
 are ignored when this is argument is given.}
@@ -30,20 +30,20 @@ be \code{all} for all population, or the number of a population.}
 
 \item{time}{The time at which the selection starts if \code{start == TRUE}
 (looking forwards in time), or the time at which the selection strength
-changes if \code{start == FALSE}. The new strength applies for to the time
+changes if \code{start == FALSE}. The new strength applies for the time
 period further into the past in this case.}
 
-\item{start}{Whether selection should start at this time point. At this time
+\item{start}{Whether selection should start at this time point. At this time,
 the selected allele is introduced in the population with an initial
 starting frequency. This must be set to \code{TRUE} for exactly one
 selection feature in the model. The values of \code{start_frequency},
 \code{Ne}, \code{position} and \code{force_keep} are used for the model.
-You can add aditional selection feature to the model to set the
+You can add additional selection feature to the model to set the
 selection strength for more demes or change it at different time points,
 but these need to have \code{start = FALSE}.}
 
 \item{start_frequency}{The start frequency at which the selected allele is
-introduced at time \code{time}. If the model has multiple population, this
+introduced at \code{time}. If the model has multiple population, this
 can either be a numeric vector that contains the initial frequency for each
 population or a single number. In the latter case, the value is used for
 all population specified with \code{populations}, and 0 is used for all
@@ -56,19 +56,41 @@ simulations.}
 simulated sequence. Values between 0 and 1 are within the simulated area,
 while smaller values are to the left of it and larger ones to the right.}
 
-\item{force_keep}{Whether to restart simulatin in which the selected goes to
+\item{force_keep}{Whether to restart simulations in which the selected goes to
 extinction or not.}
 }
 \description{
-Adds positive selection to a model
+This feature adds selection to a model. Only one site per locus can be under
+selection. Using this feature requires that \code{msms} is installed, see
+\code{\link{activate_msms}}.
 }
 \examples{
-# Positive selection in population 2:
-model <- coal_model(c(10, 13), 100) +
-  feat_pop_merge(par_range('tau', .1, 2), 2, 1) +
-  feat_selection(strength_AA=par_expr(2*s),
-                 strength_Aa=par_range('s', 100, 2000),
+# Positive additive selection in population 2:
+model <- coal_model(c(10, 13), 1, 10000) +
+  feat_pop_merge(.5, 2, 1) +
+  feat_selection(strength_A = 1000,
                  population = 2,
-                 time=par_expr(tau))
+                 time = par_named("tau")) +
+  feat_mutation(100) +
+  feat_recombination(10) +
+  sumstat_tajimas_d(population = 2)
+\dontrun{simulate(model, pars = c(tau = 0.03))}
+}
+\seealso{
+For using rates that variate between the loci in a model:
+  \code{\link{par_variation}}, \code{\link{par_zero_inflation}}
+
+For summary statistics that are sensitive for selection:
+  \code{\link{sumstat_tajimas_d}}, \code{\link{sumstat_ihh}},
+  \code{\link{sumstat_omega}}, \code{\link{sumstat_mcmf}}
+
+Other features: \code{\link{feat_growth}},
+  \code{\link{feat_ignore_singletons}},
+  \code{\link{feat_migration}},
+  \code{\link{feat_mutation}}, \code{\link{feat_outgroup}},
+  \code{\link{feat_pop_merge}},
+  \code{\link{feat_recombination}},
+  \code{\link{feat_size_change}},
+  \code{\link{feat_unphased}}
 }
 

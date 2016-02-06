@@ -15,15 +15,24 @@ msms_class <- R6Class("Msms", inherit = simulator_class,
     name = "msms",
     jar = NULL,
     java = NULL,
-    priority = 200
+    priority = 200,
+    url = "http://www.mabs.at/ewing/msms/msms3.2rc-b163.jar"
   ),
   public = list(
-    initialize = function(jar = NULL, java = NULL, priority = 200) {
+    initialize = function(jar, java, priority, download) {
+      # Download the jar if requested by the user
+      assert_that(is.logical(download) && length(download) == 1)
+      if (download) {
+        jar <- base::tempfile("msms_", fileext = ".jar")
+        utils::download.file(private$url, jar)
+      }
+
       # Try to automatically find a jar file and java if not given
       if (is.null(jar)) jar <- search_executable("msms.jar", "MSMS")
       if (is.null(jar)) stop("No jar file for msms found.")
       if (!file.exists(jar)) stop("msms jar (", jar, ") does not exist.")
       assert_that(is.character(jar) && length(jar) == 1)
+      message("Using '", jar, "' as msms jar")
       private$jar <- jar
 
       if (is.null(java)) java <- search_executable(c("java", "java.exe"))
@@ -32,8 +41,7 @@ msms_class <- R6Class("Msms", inherit = simulator_class,
       assert_that(is.character(java) && length(java) == 1)
       private$java <- java
 
-      assert_that(is.numeric(priority) && length(priority) == 1)
-      private$priority <- priority
+      super$initialize(priority)
     },
     call_msms = function(msms_args) {
       out_file <- tempfile("msms")
@@ -117,13 +125,13 @@ msms_class <- R6Class("Msms", inherit = simulator_class,
 has_msms <- function() !is.null(simulators[["msms"]])
 
 
-#' Use the simulator msms
+#' Simulator: msms
 #'
 #' This adds the simulator 'msms' to the list of available simulators. To add
 #' msms, you need to download the jar file and have Java installed on your
 #' system.
 #'
-#' @section Citation:
+#' @references
 #' Gregory Ewing and Joachim Hermisson.
 #' MSMS: a coalescent simulation program including recombination,
 #' demographic structure and selection at a single locus.
@@ -132,9 +140,21 @@ has_msms <- function() !is.null(simulators[["msms"]])
 #'
 #' @param jar The path of the msms jar file.
 #' @param java The path of the java executable on your system.
-#' @inheritParams activate_ms
+#' @param download If set to \code{TRUE}, coala will try to download
+#'        the msms jar file. In that case, the \code{jar} argument
+#'        is not required.
+#' @inheritParams simulator_ms
+#' @name simulator_msms
+#' @family simulators
+#' @examples
+#' # Download and activate msms (requires Java)
+#' \dontrun{activate_msms(download = TRUE)}
 #' @export
-activate_msms <- function(jar, java, priority = 200) {
-  register_simulator(msms_class$new(jar, java, priority))
+activate_msms <- function(jar = NULL, java = NULL,
+                          priority = 200, download = FALSE) {
+  register_simulator(msms_class$new(jar, java,
+                                    priority,
+                                    download))
+  reset_cache()
   invisible(NULL)
 }

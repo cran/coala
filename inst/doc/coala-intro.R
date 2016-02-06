@@ -59,7 +59,8 @@ length(sumstats$seg_sites)
 model <- coal_model(5, 1) +
   feat_mutation(rate = par_named("theta")) +
   sumstat_seg_sites()
-sumstats <- simulate(model, pars=c(theta=2.5))
+sumstats1 <- simulate(model, pars = c(theta = 2.5))
+sumstats2 <- simulate(model, pars = c(theta = 4.3))
 
 ## ----priors--------------------------------------------------------------
 model <- coal_model(5, 1) +

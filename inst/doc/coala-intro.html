@@ -53,16 +53,16 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div id="header">
 <h1 class="title">Introduction to Coala</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.3.0</em></h4>
+<h4 class="date"><em>coala 0.4.0</em></h4>
 </div>
 
 
-<p>Coalescent simulation refers to the idea of simulating the evolution of biological sequences like DNA by tracing their ancestry back in time. The <code>coala</code> package is an interface for calling a number of commonly used coalescent simulators from R. It should be able to use the simulator <code>scrm</code> out of the box. Other simulators need to be installed separately and must explicitly be activated. This is described in the <code>installation</code> vignette:</p>
+<p>Coalescent simulation refers to the idea of simulating the evolution of biological sequences like DNA by tracing their ancestry back in time. The <code>coala</code> package is an interface for calling a number of commonly used coalescent simulators from R. It should be able to use the simulator <code>scrm</code> out of the box. Other simulators need to be installed separately and must be activated explicitly. This is described in the <code>installation</code> vignette:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;coala-install&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;coala&quot;</span>)</code></pre>
-<p>In this introduction we’ll stick to using <code>scrm</code>.</p>
+<p>In this introduction we will stick to using <code>scrm</code>.</p>
 <div id="creating-a-model" class="section level1">
 <h1>Creating a model</h1>
-<p>In order to conduct simulations, we first need to specify a model of evolution that is used for the simulations. The function <code>coal_model</code> creates a basic coalescent model:</p>
+<p>In order to conduct simulations, we first need to specify the components of the simulation model. The function <code>coal_model</code> creates a basic coalescent model:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(coala)
 model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="dv">3</span>, <span class="dt">loci_number =</span> <span class="dv">1</span>)</code></pre>
 <p>This creates a basic model with one population of constant size. One genetic locus for three haplotypes is sampled from the population.</p>
@@ -76,8 +76,8 @@ model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span cla
 ## 
 ## Summary Statistics: None
 ## 
-## Simulator: scrm 
-## Command: scrm 3 1</code></pre>
+## Simulator: ms 
+## Command: ms 3 1</code></pre>
 <p>Models consist of</p>
 <ul>
 <li><em>features</em>, which represent evolutionary forces and events present in the model,</li>
@@ -102,9 +102,9 @@ model</code></pre>
 ## 
 ## Summary Statistics: None
 ## 
-## Simulator: scrm 
-## Command: scrm 3 1 -t 1</code></pre>
-<p>Now, mutations occur with rate 1 and according to an infinite-sites mutation model (IFS). Details on both rate and mutation model are given the help page of the feature (<code>?feat_mutation</code>).</p>
+## Simulator: ms 
+## Command: ms 3 1 -t 1</code></pre>
+<p>Now, mutations occur with rate 1 and according to an infinite-sites mutation model (IFS). Details of rate and mutation model are given in the help page of the feature (<code>?feat_mutation</code>).</p>
 <p>Coala currently support the features</p>
 <pre><code>##  [1] &quot;feat_growth&quot;            &quot;feat_ignore_singletons&quot;
 ##  [3] &quot;feat_migration&quot;         &quot;feat_mutation&quot;         
@@ -114,12 +114,12 @@ model</code></pre>
 <p>However, not all combination of all features might be possible. Please refer to the features help pages for detailed information.</p>
 <div id="multiple-populations" class="section level2">
 <h2>Multiple Populations</h2>
-<p>If we a model consisting of multiple populations, we need to state the sample sizes as a vector of sample sizes for the different populations. The lines</p>
+<p>If we build a model consisting of multiple populations, we need to state the sample sizes as a vector of sample sizes for the different populations. The lines,</p>
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">0</span>), <span class="dt">loci_number =</span> <span class="dv">1</span>) +
 <span class="st">  </span><span class="kw">feat_migration</span>(<span class="dt">rate =</span> <span class="fl">0.5</span>, <span class="dt">symmetric =</span> <span class="ot">TRUE</span>) +
 <span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.5</span>, <span class="dv">3</span>, <span class="dv">2</span>) +
 <span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.8</span>, <span class="dv">2</span>, <span class="dv">1</span>)</code></pre>
-<p>create a model of three populations, with a symmetric migration rate of <code>0.5</code> between them. View backwards in time, population 3 merges into population 2 <code>0.5</code> coalescent time units in the past and population 2 into population 1 <code>0.3</code> time units further into the past. Looking forwards in time, this represents two speciation events with migration going on afterwards. At time <code>0</code> five haploids of population 1 and two ones of population 2 are sampled. Please note that sample sizes for all populations must be given, even if no haploid is sampled from a population, as it is the case for population 3 here.</p>
+<p>create a model of three populations, with a symmetric migration rate of <code>0.5</code> between them. When viewed backwards in time, population 3 merges into population 2 <code>0.5</code> coalescent time units in the past and population 2 into population 1 <code>0.3</code> time units further into the past. Looking forwards in time, this represents two speciation events with migration going on afterwards. At time <code>0</code> five haploids are sampled from population 1 and two from population 2. Please note that sample sizes for all populations must be given, even if no haploid is sampled from a population, as it is the case for population 3 here.</p>
 </div>
 </div>
 <div id="adding-summary-statistics" class="section level1">
@@ -140,8 +140,8 @@ model</code></pre>
 ## 
 ## Summary Statistics: stat_segsites 
 ## 
-## Simulator: scrm 
-## Command: scrm 3 1 -t 1</code></pre>
+## Simulator: ms 
+## Command: ms 3 1 -t 1</code></pre>
 <p>This adds the <em>segregating sites</em> summary statistic to the model, which is a basic summary statistic in population genetics. Again, refer to <code>?sumstat_seg_sites</code> for details.</p>
 <p>Available summary statistics are:</p>
 <pre><code>##  [1] &quot;sumstat_class&quot;          &quot;sumstat_dna&quot;           
@@ -154,19 +154,19 @@ model</code></pre>
 </div>
 <div id="simulating-the-model" class="section level1">
 <h1>Simulating the model</h1>
-<p>We now can simulate the model. The printed output of a model contains information which program will be used for the simulation and which arguments will be used. As coala is in a early stage, please make sure to always check both.</p>
+<p>Now we can simulate the model. The printed output of a model contains information which program will be used for the simulation and which arguments will be used. As coala is in an early stage, please make sure to always check both.</p>
 <p>The function <code>simulate</code> will call the program with the printed options, parse its output and calculated the added summary statistics:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</code></pre>
-<p>The returned object <code>sumstats</code> a list, in which each entry corresponds to one summary statistic. As there is only one summary statistic in our model, it has only one entry:</p>
+<p>The returned object <code>sumstats</code> is a list, in which each entry corresponds to one summary statistic. As there is only one summary statistic in our model, the list has only one entry:</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(sumstats)</code></pre>
 <pre><code>## [1] &quot;seg_sites&quot; &quot;pars&quot;      &quot;cmds&quot;      &quot;simulator&quot;</code></pre>
 <p>The structure in <code>sumstats$seg_sites</code> is given by the segregating sites statistic. It is again a list, where each entry represents one locus. For each locus, it contains a matrix as specified in <code>?sumstat_seg_sites</code>:</p>
 <pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre>
-<pre><code>##      0.1041606 0.4223301
-## [1,]         0         0
-## [2,]         1         1
-## [3,]         1         1</code></pre>
+<pre><code>##      0.551435
+## [1,]        0
+## [2,]        0
+## [3,]        1</code></pre>
 </div>
 <div id="adding-loci" class="section level1">
 <h1>Adding Loci</h1>
@@ -186,20 +186,20 @@ model</code></pre>
 ## 
 ## Summary Statistics: stat_segsites 
 ## 
-## Simulator: scrm 
-## Command: scrm 3 1 -t 1</code></pre>
+## Simulator: ms 
+## Command: ms 3 1 -t 1</code></pre>
 <p>Now the model consists of two loci, the first with length 1000, the second with 500. Simulation now produces a segregating sites list with two entries corresponding to the loci:</p>
 <pre class="sourceCode r"><code class="sourceCode r">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre>
-<pre><code>##      0.3144767 0.4034762
-## [1,]         0         0
+<pre><code>##      0.3279207 0.9545036
+## [1,]         1         1
 ## [2,]         0         0
-## [3,]         1         1</code></pre>
+## [3,]         0         0</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">2</span>]]</code></pre>
-<pre><code>##      0.919158
-## [1,]        1
-## [2,]        0
-## [3,]        0</code></pre>
+<pre><code>##     
+## [1,]
+## [2,]
+## [3,]</code></pre>
 <p>Another possibility is to add multiple loci with the same length using <code>locus_averaged</code>, which gives better performance than adding the loci one by one. For example</p>
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_averaged</span>(<span class="dv">2</span>, <span class="dv">750</span>)
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
@@ -209,42 +209,43 @@ sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 </div>
 <div id="adding-parameters" class="section level1">
 <h1>Adding Parameters</h1>
-<p>So far, we have used a model without parameters that can vary between simulations. In particular for fitting a model to data via ABC or Jaatha it is useful to such parameters so that you don’t need to create a new model for each simulation.</p>
+<p>So far, we have used a model without parameters that can vary between simulations. In particular for fitting a model to data via ABC or Jaatha, it is useful to add parameters to a previous model instead of creating a new model for each simulation.</p>
 <div id="named-parameters" class="section level3">
 <h3>Named Parameters</h3>
-<p>Named parameters values can be specified in the simulation command. If we want to simulate a model for different values of the mutation rate, we can use a named parameter:</p>
+<p>Named parameters values can be specified in the simulation command. If we want, for example, to launch simulations for a model with different values of the mutation rate, we can use a named parameter:</p>
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
 <span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) +
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
-sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars=</span><span class="kw">c</span>(<span class="dt">theta=</span><span class="fl">2.5</span>))</code></pre>
+sumstats1 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">2.5</span>))
+sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">4.3</span>))</code></pre>
 </div>
 <div id="parameters-with-priors" class="section level3">
 <h3>Parameters with Priors</h3>
-<p>A parameter distributed according to a prior can be specified using the <code>par_prior</code> function. The functions first argument is a name for the parameter, the second an expression that when evaluated produces a sample from the prior distribution.</p>
+<p>A parameter distributed according to a prior can be specified using the <code>par_prior</code> function. The function’s first argument is a name for the parameter, the second an expression that, when evaluated, produces a sample from the prior distribution.</p>
 <p>So if we want the mutation to follow a uniform distribution between <code>0</code> and <code>10</code>, we can use:</p>
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
 <span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_prior</span>(<span class="st">&quot;theta&quot;</span>, <span class="kw">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">10</span>))) +
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 sumstats$pars</code></pre>
-<pre><code>##  theta 
-## 3.0772</code></pre>
+<pre><code>##     theta 
+## 0.7669117</code></pre>
 <pre class="sourceCode r"><code class="sourceCode r">sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 sumstats2$pars</code></pre>
 <pre><code>##    theta 
-## 6.499852</code></pre>
+## 3.554454</code></pre>
 </div>
 <div id="parameter-ranges" class="section level3">
 <h3>Parameter Ranges</h3>
-<p>For Jaatha, you need to give a range of possible values for each parameters. This is done using <code>par_range</code>. For instance</p>
+<p>For simulations that will we used for parameter inference with the R package <code>jaatha</code>, you need to give a range of possible values for each parameter. This is done using <code>par_range</code>. For instance</p>
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
 <span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_range</span>(<span class="st">&quot;theta&quot;</span>, <span class="fl">0.1</span>, <span class="dv">5</span>)) +
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()</code></pre>
-<p>sets a possible range from <em>0.1</em> to <em>5</em> for the mutation rate. The actual rate is given in <code>simulate</code> just as with named parameters.</p>
+<p>sets a possible range from <em>0.1</em> to <em>5</em> for the mutation rate. The actual rate is given in the <code>simulate</code> function, just as with named parameters.</p>
 </div>
 <div id="expressions" class="section level3">
 <h3>Expressions</h3>
-<p>Finally, there is a very powerful type of parameters generated with <code>par_expr</code>. Similar to parameters with priors, the value of the parameter is given as an R expression, which is evaluated before simulation. Different to <code>par_prior</code>, this expression can contain other named parameters. For example</p>
+<p>Finally, there is a very powerful type of parameters generated with <code>par_expr</code>. Similar to parameters with priors, the value of the parameter is given as an R expression, which is evaluated before simulation. Unlinke <code>par_prior</code>, this expression can contain other named parameters. For example</p>
 <pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">4</span>, <span class="dv">2</span>) +
 <span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) +
 <span class="st">  </span><span class="kw">feat_recombination</span>(<span class="dt">rate =</span> <span class="kw">par_expr</span>(theta *<span class="st"> </span><span class="dv">2</span>))</code></pre>

@@ -1,9 +1,25 @@
+coala 0.4.0
+===========
+
+* Adds the `create_abc_param` and `create_abc_sumstat` functions for converting 
+  the simulation results into the format needed for abc::abc function (#151).
+* Improves the documentation significantly and adds more examples and links to
+  help pages (#150).
+* Changes name of `get_population_indiviuals` to `get_population_individuals`
+  (#150).
+* Adds an option to `active_msms()` to download msms' jar file (#153).
+* Adds support for partial models. Now, arbitrary sets of features, loci,
+  parameters and summary statistics can be combined via `+` and then be
+  added to one or more models later (#155).
+
+
+
 coala 0.3.0
 ===========
 
 ## Major improvements
 * Support for more selection models, including ones for local adaptation (#137).
-* Add `as.segsites.GENOME` function that converts genetic data imported with
+* Adds `as.segsites.GENOME` function that converts genetic data imported with
   the package PopGenome to coala's format (#139).
 
 ## Small Changes
