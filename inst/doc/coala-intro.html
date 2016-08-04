@@ -8,6 +8,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <meta name="author" content="Paul Staab" />
 
 
@@ -17,32 +19,46 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
+div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
 table.sourceCode { width: 100%; line-height: 100%; }
 td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
 td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; }
-code > span.dt { color: #902000; }
-code > span.dv { color: #40a070; }
-code > span.bn { color: #40a070; }
-code > span.fl { color: #40a070; }
-code > span.ch { color: #4070a0; }
-code > span.st { color: #4070a0; }
-code > span.co { color: #60a0b0; font-style: italic; }
-code > span.ot { color: #007020; }
-code > span.al { color: #ff0000; font-weight: bold; }
-code > span.fu { color: #06287e; }
-code > span.er { color: #ff0000; font-weight: bold; }
-</style>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 
-<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -50,24 +66,24 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 
 
-<div id="header">
-<h1 class="title">Introduction to Coala</h1>
+
+<h1 class="title toc-ignore">Introduction to Coala</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.4.0</em></h4>
-</div>
+<h4 class="date"><em>coala 0.4.1</em></h4>
+
 
 
 <p>Coalescent simulation refers to the idea of simulating the evolution of biological sequences like DNA by tracing their ancestry back in time. The <code>coala</code> package is an interface for calling a number of commonly used coalescent simulators from R. It should be able to use the simulator <code>scrm</code> out of the box. Other simulators need to be installed separately and must be activated explicitly. This is described in the <code>installation</code> vignette:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;coala-install&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;coala&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;coala-install&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;coala&quot;</span>)</code></pre></div>
 <p>In this introduction we will stick to using <code>scrm</code>.</p>
 <div id="creating-a-model" class="section level1">
 <h1>Creating a model</h1>
 <p>In order to conduct simulations, we first need to specify the components of the simulation model. The function <code>coal_model</code> creates a basic coalescent model:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(coala)
-model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="dv">3</span>, <span class="dt">loci_number =</span> <span class="dv">1</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(coala)
+model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="dv">3</span>, <span class="dt">loci_number =</span> <span class="dv">1</span>)</code></pre></div>
 <p>This creates a basic model with one population of constant size. One genetic locus for three haplotypes is sampled from the population.</p>
 <p>Printing the model gives a short summary of this content:</p>
-<pre class="sourceCode r"><code class="sourceCode r">model</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model</code></pre></div>
 <pre><code>## Features: Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
 ## 
 ## Parameter: None
@@ -90,8 +106,8 @@ model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span cla
 <div id="adding-features" class="section level1">
 <h1>Adding Features</h1>
 <p>For simulating sequences, we need to add mutations to the model. To do so, we create a corresponding feature using <code>feat_mutation</code> and add it to the existing model using the plus operator:</p>
-<pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>)
-model</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>)
+model</code></pre></div>
 <pre><code>## Features: 
 ## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
 ## * Mutations with rate `1` following a IFS mutation model
@@ -115,20 +131,20 @@ model</code></pre>
 <div id="multiple-populations" class="section level2">
 <h2>Multiple Populations</h2>
 <p>If we build a model consisting of multiple populations, we need to state the sample sizes as a vector of sample sizes for the different populations. The lines,</p>
-<pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">0</span>), <span class="dt">loci_number =</span> <span class="dv">1</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">0</span>), <span class="dt">loci_number =</span> <span class="dv">1</span>) +
 <span class="st">  </span><span class="kw">feat_migration</span>(<span class="dt">rate =</span> <span class="fl">0.5</span>, <span class="dt">symmetric =</span> <span class="ot">TRUE</span>) +
 <span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.5</span>, <span class="dv">3</span>, <span class="dv">2</span>) +
-<span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.8</span>, <span class="dv">2</span>, <span class="dv">1</span>)</code></pre>
+<span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.8</span>, <span class="dv">2</span>, <span class="dv">1</span>)</code></pre></div>
 <p>create a model of three populations, with a symmetric migration rate of <code>0.5</code> between them. When viewed backwards in time, population 3 merges into population 2 <code>0.5</code> coalescent time units in the past and population 2 into population 1 <code>0.3</code> time units further into the past. Looking forwards in time, this represents two speciation events with migration going on afterwards. At time <code>0</code> five haploids are sampled from population 1 and two from population 2. Please note that sample sizes for all populations must be given, even if no haploid is sampled from a population, as it is the case for population 3 here.</p>
 </div>
 </div>
 <div id="adding-summary-statistics" class="section level1">
 <h1>Adding Summary Statistics</h1>
 <p>Adding summary statistics works in a similar fashion as adding features:</p>
-<pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">3</span>, <span class="dv">1</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">3</span>, <span class="dv">1</span>) +
 <span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>) +
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
-model</code></pre>
+model</code></pre></div>
 <pre><code>## Features: 
 ## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
 ## * Mutations with rate `1` following a IFS mutation model
@@ -156,13 +172,13 @@ model</code></pre>
 <h1>Simulating the model</h1>
 <p>Now we can simulate the model. The printed output of a model contains information which program will be used for the simulation and which arguments will be used. As coala is in an early stage, please make sure to always check both.</p>
 <p>The function <code>simulate</code> will call the program with the printed options, parse its output and calculated the added summary statistics:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
-sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
+sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</code></pre></div>
 <p>The returned object <code>sumstats</code> is a list, in which each entry corresponds to one summary statistic. As there is only one summary statistic in our model, the list has only one entry:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(sumstats)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(sumstats)</code></pre></div>
 <pre><code>## [1] &quot;seg_sites&quot; &quot;pars&quot;      &quot;cmds&quot;      &quot;simulator&quot;</code></pre>
 <p>The structure in <code>sumstats$seg_sites</code> is given by the segregating sites statistic. It is again a list, where each entry represents one locus. For each locus, it contains a matrix as specified in <code>?sumstat_seg_sites</code>:</p>
-<pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre></div>
 <pre><code>##      0.551435
 ## [1,]        0
 ## [2,]        0
@@ -171,8 +187,8 @@ sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</
 <div id="adding-loci" class="section level1">
 <h1>Adding Loci</h1>
 <p>If we want to have more loci in a model, we can add them using the <code>locus_</code> functions. The most basic option is to add an additional locus with a different length:</p>
-<pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_single</span>(<span class="dv">500</span>)
-model</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_single</span>(<span class="dv">500</span>)
+model</code></pre></div>
 <pre><code>## Features: 
 ## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
 ## * Mutations with rate `1` following a IFS mutation model
@@ -189,21 +205,21 @@ model</code></pre>
 ## Simulator: ms 
 ## Command: ms 3 1 -t 1</code></pre>
 <p>Now the model consists of two loci, the first with length 1000, the second with 500. Simulation now produces a segregating sites list with two entries corresponding to the loci:</p>
-<pre class="sourceCode r"><code class="sourceCode r">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
+sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre></div>
 <pre><code>##      0.3279207 0.9545036
 ## [1,]         1         1
 ## [2,]         0         0
 ## [3,]         0         0</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">2</span>]]</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">2</span>]]</code></pre></div>
 <pre><code>##     
 ## [1,]
 ## [2,]
 ## [3,]</code></pre>
 <p>Another possibility is to add multiple loci with the same length using <code>locus_averaged</code>, which gives better performance than adding the loci one by one. For example</p>
-<pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_averaged</span>(<span class="dv">2</span>, <span class="dv">750</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_averaged</span>(<span class="dv">2</span>, <span class="dv">750</span>)
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-<span class="kw">length</span>(sumstats$seg_sites)</code></pre>
+<span class="kw">length</span>(sumstats$seg_sites)</code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>adds two more loci with length of 750bp to the model.</p>
 </div>
@@ -213,42 +229,42 @@ sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 <div id="named-parameters" class="section level3">
 <h3>Named Parameters</h3>
 <p>Named parameters values can be specified in the simulation command. If we want, for example, to launch simulations for a model with different values of the mutation rate, we can use a named parameter:</p>
-<pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
 <span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) +
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
 sumstats1 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">2.5</span>))
-sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">4.3</span>))</code></pre>
+sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">4.3</span>))</code></pre></div>
 </div>
 <div id="parameters-with-priors" class="section level3">
 <h3>Parameters with Priors</h3>
 <p>A parameter distributed according to a prior can be specified using the <code>par_prior</code> function. The function’s first argument is a name for the parameter, the second an expression that, when evaluated, produces a sample from the prior distribution.</p>
 <p>So if we want the mutation to follow a uniform distribution between <code>0</code> and <code>10</code>, we can use:</p>
-<pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
 <span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_prior</span>(<span class="st">&quot;theta&quot;</span>, <span class="kw">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">10</span>))) +
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-sumstats$pars</code></pre>
+sumstats$pars</code></pre></div>
 <pre><code>##     theta 
 ## 0.7669117</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-sumstats2$pars</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
+sumstats2$pars</code></pre></div>
 <pre><code>##    theta 
 ## 3.554454</code></pre>
 </div>
 <div id="parameter-ranges" class="section level3">
 <h3>Parameter Ranges</h3>
 <p>For simulations that will we used for parameter inference with the R package <code>jaatha</code>, you need to give a range of possible values for each parameter. This is done using <code>par_range</code>. For instance</p>
-<pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
 <span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_range</span>(<span class="st">&quot;theta&quot;</span>, <span class="fl">0.1</span>, <span class="dv">5</span>)) +
-<span class="st">  </span><span class="kw">sumstat_seg_sites</span>()</code></pre>
+<span class="st">  </span><span class="kw">sumstat_seg_sites</span>()</code></pre></div>
 <p>sets a possible range from <em>0.1</em> to <em>5</em> for the mutation rate. The actual rate is given in the <code>simulate</code> function, just as with named parameters.</p>
 </div>
 <div id="expressions" class="section level3">
 <h3>Expressions</h3>
 <p>Finally, there is a very powerful type of parameters generated with <code>par_expr</code>. Similar to parameters with priors, the value of the parameter is given as an R expression, which is evaluated before simulation. Unlinke <code>par_prior</code>, this expression can contain other named parameters. For example</p>
-<pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">4</span>, <span class="dv">2</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">4</span>, <span class="dv">2</span>) +
 <span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) +
-<span class="st">  </span><span class="kw">feat_recombination</span>(<span class="dt">rate =</span> <span class="kw">par_expr</span>(theta *<span class="st"> </span><span class="dv">2</span>))</code></pre>
+<span class="st">  </span><span class="kw">feat_recombination</span>(<span class="dt">rate =</span> <span class="kw">par_expr</span>(theta *<span class="st"> </span><span class="dv">2</span>))</code></pre></div>
 <p>creates a model with a a recombination rate that always is twice as high as the mutation rate.</p>
 </div>
 </div>

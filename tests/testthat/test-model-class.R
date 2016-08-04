@@ -156,6 +156,11 @@ test_that("getting indiviuals in polyploid models works", {
   expect_equal(get_population_individuals(model, 3, haploids = FALSE), 4:6)
   expect_equal(get_population_individuals(model, 4, haploids = FALSE), 7:10)
   expect_equal(get_population_individuals(model, 5, haploids = FALSE), 11:15)
+  model <- model + feat_unphased(1)
+  expect_equal(get_population_individuals(model, 1, haploids = FALSE), 1)
+  expect_equal(get_population_individuals(model, 1, haploids = TRUE), 1)
+  expect_equal(get_population_individuals(model, 2, haploids = FALSE), 2:3)
+  expect_equal(get_population_individuals(model, 2, haploids = TRUE), 2:3)
 })
 
 
@@ -173,6 +178,7 @@ test_that("getting the ploidy and individuals works", {
   expect_equal(get_sample_size(model, for_sim = TRUE), sample_size * 4)
   expect_true(is_unphased(model))
 })
+
 
 
 test_that("print works on models", {
@@ -238,7 +244,7 @@ test_that("creating a parameter table works ", {
     par_range("theta", 1, 2) +
     par_range("tau", 5, 6)
   expect_equal(get_parameter_table(model),
-               data.frame(name = c("theta","tau"),
+               data.frame(name = c("theta", "tau"),
                           lower.range = c(1, 5),
                           upper.range = c(2, 6),
                           stringsAsFactors = FALSE))
