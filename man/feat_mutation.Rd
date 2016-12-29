@@ -5,7 +5,7 @@
 \title{Feature: Mutation}
 \usage{
 feat_mutation(rate, model = "IFS", base_frequencies = NA, tstv_ratio = NA,
-  gtr_rates = NA, fixed_number = FALSE)
+  gtr_rates = NA, fixed_number = FALSE, locus_group = "all")
 }
 \arguments{
 \item{rate}{The mutation rate. Can be a numeric or a \code{\link{parameter}}.
@@ -30,9 +30,22 @@ Order: A<->C, A<->G, A<->T, C<->G, C<->T, G<->T.}
 \item{fixed_number}{If set to \code{TRUE}, the number of mutations on each
 locus will always be exactly equal to the rate, rather than happening with
 a rate along the ancestral tree.}
+
+\item{locus_group}{The loci for which this features is used. Can either be
+\code{"all"} (default), in which case the feature is used for simulating
+all loci, or a numeric vector. In the latter case, the feature is only
+used for the loci added in \code{locus_} commands  with the corresponding
+index starting from 1 in order in which the commands where added to the
+model. For example, if a model has
+\code{locus_single(10) + locus_averaged(10, 11) + locus_single(12)} and
+this argument is \code{c(2, 3)}, than the feature is used for all but
+the first locus (that is locus 2 - 12).}
 }
 \value{
 The feature, which can be added to a model using `+`.
+
+The feature, which can be added to a model created with
+  \code{\link{coal_model}} using \code{+}.
 }
 \description{
 This feature adds mutations to a model. Mutations occur in the genomes
@@ -69,33 +82,47 @@ type of substitution. The rates are assumed to be symmetric
 model <- coal_model(5, 1) + feat_mutation(5) + sumstat_seg_sites()
 simulate(model)
 
-# A model with 7 mutations per locus:
-model <- coal_model(5, 1) + feat_mutation(7, fixed = TRUE) + sumstat_seg_sites()
+# A model with a mutation of 5.0 for the first 10 loci, and 7.5 for the
+# second 10 loci
+model <- coal_model(4) +
+  locus_averaged(10, 100) +
+  locus_averaged(10, 100) +
+  feat_mutation(5.0, locus_group = 1) +
+  feat_mutation(7.5, locus_group = 2) +
+  sumstat_seg_sites()
 simulate(model)
+
+# A model with 7 mutations per locus:
+model <- coal_model(5, 1) +
+  feat_mutation(7, fixed = TRUE) +
+  sumstat_seg_sites()
+\dontrun{simulate(model)}
 
 # A model using the HKY model:
 model <- coal_model(c(10, 1), 2) +
  feat_mutation(7.5, model = "HKY", tstv_ratio = 2,
                base_frequencies = c(.25, .25, .25, .25)) +
- feat_outgroup(2) +
- feat_pop_merge(1.0, 2, 1) +
- sumstat_seg_sites()
- \dontrun{simulate(model)}
+  feat_outgroup(2) +
+  feat_pop_merge(1.0, 2, 1) +
+  sumstat_seg_sites()
+\dontrun{simulate(model)}
 
 # A model using the GTR model:
 model <- coal_model(c(10, 1), 1, 25) +
- feat_mutation(7.5, model = "GTR",
-               gtr_rates = c(1, 1, 1, 1, 1, 1) / 6) +
- feat_outgroup(2) +
- feat_pop_merge(1.0, 2, 1) +
- sumstat_dna()
- \dontrun{simulate(model)$dna}
+  feat_mutation(7.5, model = "GTR",
+                gtr_rates = c(1, 1, 1, 1, 1, 1) / 6) +
+  feat_outgroup(2) +
+  feat_pop_merge(1.0, 2, 1) +
+  sumstat_dna()
+\dontrun{simulate(model)$dna}
 }
 \seealso{
 For using rates that variate between the loci in a model:
   \code{\link{par_variation}}, \code{\link{par_zero_inflation}}
 
 For adding recombination: \code{\link{feat_recombination}}.
+
+For creating a model: \code{\link{coal_model}}
 
 Other features: \code{\link{feat_growth}},
   \code{\link{feat_ignore_singletons}},

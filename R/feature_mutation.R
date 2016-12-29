@@ -9,8 +9,10 @@ mutation_class <- R6Class("mutation", inherit = feature_class,
   ),
   public = list(
     initialize = function(rate, model, base_frequencies,
-                          tstv_ratio, gtr_rates, fixed) {
+                          tstv_ratio, gtr_rates, fixed,
+                          locus_group) {
       private$rate <- private$add_parameter(rate, add_par = FALSE)
+      private$set_locus_group(locus_group)
 
       assert_that(length(model) == 1)
       assert_that(any(model == c("IFS", "HKY", "GTR")))
@@ -91,7 +93,7 @@ mutation_class <- R6Class("mutation", inherit = feature_class,
 #' @seealso For using rates that variate between the loci in a model:
 #'   \code{\link{par_variation}}, \code{\link{par_zero_inflation}}
 #' @seealso For adding recombination: \code{\link{feat_recombination}}.
-#' @family features
+#' @template feature
 #'
 #' @section Mutation Models:
 #' The infinite sites mutation (\strong{IFS}) model is a frequently used simplification
@@ -119,36 +121,50 @@ mutation_class <- R6Class("mutation", inherit = feature_class,
 #' model <- coal_model(5, 1) + feat_mutation(5) + sumstat_seg_sites()
 #' simulate(model)
 #'
-#' # A model with 7 mutations per locus:
-#' model <- coal_model(5, 1) + feat_mutation(7, fixed = TRUE) + sumstat_seg_sites()
+#' # A model with a mutation of 5.0 for the first 10 loci, and 7.5 for the
+#' # second 10 loci
+#' model <- coal_model(4) +
+#'   locus_averaged(10, 100) +
+#'   locus_averaged(10, 100) +
+#'   feat_mutation(5.0, locus_group = 1) +
+#'   feat_mutation(7.5, locus_group = 2) +
+#'   sumstat_seg_sites()
 #' simulate(model)
+#'
+#' # A model with 7 mutations per locus:
+#' model <- coal_model(5, 1) +
+#'   feat_mutation(7, fixed = TRUE) +
+#'   sumstat_seg_sites()
+#' \dontrun{simulate(model)}
 #'
 #' # A model using the HKY model:
 #' model <- coal_model(c(10, 1), 2) +
 #'  feat_mutation(7.5, model = "HKY", tstv_ratio = 2,
 #'                base_frequencies = c(.25, .25, .25, .25)) +
-#'  feat_outgroup(2) +
-#'  feat_pop_merge(1.0, 2, 1) +
-#'  sumstat_seg_sites()
-#'  \dontrun{simulate(model)}
+#'   feat_outgroup(2) +
+#'   feat_pop_merge(1.0, 2, 1) +
+#'   sumstat_seg_sites()
+#' \dontrun{simulate(model)}
 #'
 #' # A model using the GTR model:
 #' model <- coal_model(c(10, 1), 1, 25) +
-#'  feat_mutation(7.5, model = "GTR",
-#'                gtr_rates = c(1, 1, 1, 1, 1, 1) / 6) +
-#'  feat_outgroup(2) +
-#'  feat_pop_merge(1.0, 2, 1) +
-#'  sumstat_dna()
-#'  \dontrun{simulate(model)$dna}
+#'   feat_mutation(7.5, model = "GTR",
+#'                 gtr_rates = c(1, 1, 1, 1, 1, 1) / 6) +
+#'   feat_outgroup(2) +
+#'   feat_pop_merge(1.0, 2, 1) +
+#'   sumstat_dna()
+#' \dontrun{simulate(model)$dna}
 feat_mutation <- function(rate,
                           model = "IFS",
                           base_frequencies = NA,
                           tstv_ratio = NA,
                           gtr_rates = NA,
-                          fixed_number = FALSE) {
+                          fixed_number = FALSE,
+                          locus_group = "all") {
 
   mutation_class$new(rate, model, base_frequencies,
-                     tstv_ratio, gtr_rates, fixed_number)
+                     tstv_ratio, gtr_rates, fixed_number,
+                     locus_group = locus_group)
 }
 
 is_feat_mutation <- function(feat) any("mutation" == class(feat))
@@ -197,6 +213,5 @@ conv_to_seqgen_arg.mutation <- function(feature, model) {
          rates, " ",
          "-l', locus_length, '",
          "-s', par(", feature$get_rate(), " / locus_length), '",
-         "-p', locus_length + 1, '",
-         "-z', par(seed), '-q")
+         "-p', locus_length + 1, '-q")
 }

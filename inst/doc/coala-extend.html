@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Adding Summary Statistics and Simulators</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.4.1</em></h4>
+<h4 class="date"><em>coala 0.5.0</em></h4>
 
 
 
@@ -82,7 +82,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 stat_segsites_class &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;stat_segsites&quot;</span>, <span class="dt">inherit =</span> sumstat_class,
   <span class="dt">private =</span> <span class="kw">list</span>(<span class="dt">req_segsites =</span> <span class="ot">TRUE</span>),
   <span class="dt">public =</span> <span class="kw">list</span>(
-    <span class="dt">calculate =</span> function(segsites, trees, files, model) segsites
+    <span class="dt">calculate =</span> function(segsites, trees, files, model, sim_task) segsites
   )
 )
 
@@ -110,7 +110,7 @@ sumstat_seg_sites &lt;-<span class="st"> </span>function(<span class="dt">name =
       private$folder &lt;-<span class="st"> </span>folder
       super$<span class="kw">initialize</span>(<span class="st">&quot;file&quot;</span>, identity)
     },
-    <span class="dt">calculate =</span> function(seg_sites, trees, files, model) {
+    <span class="dt">calculate =</span> function(seg_sites, trees, files, model, sim_task) {
       <span class="kw">file.copy</span>(files, private$folder, <span class="dt">overwrite =</span> <span class="ot">FALSE</span>)
       <span class="kw">file.path</span>(private$folder, <span class="kw">basename</span>(files))
     }

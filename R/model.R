@@ -113,6 +113,27 @@ select_simprog <- function(model) {
 }
 
 
+create_group_model <- function(model, group) {
+  key <- paste0("group_model_", group)
+  group_model <- read_cache(model, key)
+
+  if (is.null(group_model)) {
+    group_model <- model
+    group_model$loci <- model$loci[group]
+    group_model$id <- get_id()
+    feature_mask <- vapply(model$features, function(feat) {
+      if (feat$get_locus_group() == "all") return(TRUE)
+      if (any(feat$get_locus_group() == group)) return(TRUE)
+      FALSE
+    }, logical(1))
+    group_model$features <- model$features[feature_mask]
+    cache(model, key, group_model)
+  }
+
+  group_model
+}
+
+
 add_variation <- function(model) {
   model$has_variation <- TRUE
   model

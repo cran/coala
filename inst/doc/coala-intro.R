@@ -32,8 +32,7 @@ model
 funcs[grep("^sumstat_", funcs)]
 
 ## ------------------------------------------------------------------------
-set.seed(123)
-sumstats <- simulate(model)
+sumstats <- simulate(model, seed = 123)
 
 ## ------------------------------------------------------------------------
 names(sumstats)

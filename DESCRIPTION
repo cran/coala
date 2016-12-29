@@ -1,11 +1,11 @@
 Package: coala
-Version: 0.4.1
+Version: 0.5.0
 License: MIT + file LICENSE
 Title: A Framework for Coalescent Simulation
 Authors@R: c(
     person('Paul', 'Staab', , 'develop@paulstaab.de', role=c('aut', 'cre')),
-    person('Dirk', 'Metzler', , 'metzler@bio.lmu.de', role=c('aut', 'ths'))
-    )
+    person('Dirk', 'Metzler', , 'metzler@bio.lmu.de', role=c('aut', 'ths')),
+    person('Jorge E.', 'Amaya Romero', role = 'ctb'))
 BugReports: https://github.com/statgenlmu/coala/issues
 URL: https://github.com/statgenlmu/coala
 Description: Coalescent simulators can rapidly simulate biological sequences
@@ -16,8 +16,9 @@ Description: Coalescent simulators can rapidly simulate biological sequences
     supports the programs 'ms', 'msms' and 'scrm'. It also supports finite-sites
     mutation models by combining the simulators with the program 'seq-gen'.
 Depends: R (>= 3.1.0)
-Imports: assertthat (>= 0.1), methods, parallel, R6 (>= 2.0.1), Rcpp
-        (>= 0.11.0), rehh (>= 2.0.0), scrm (>= 1.6.0-2), stats, utils
+Imports: assertthat (>= 0.1), digest, methods, parallel, R6 (>= 2.0.1),
+        Rcpp (>= 0.11.0), rehh (>= 2.0.0), scrm (>= 1.6.0-2), stats,
+        utils
 Suggests: abc (>= 2.0), knitr, PopGenome (>= 2.1.0), phyclust (>=
         0.1-16), rmarkdown, testthat (>= 0.11.0)
 LinkingTo: Rcpp, RcppArmadillo (>= 0.3.810.0)
@@ -33,7 +34,7 @@ Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'model.R' 'feature.R'
         'model_getters.R' 'model_print.R' 'model_scale.R'
         'model_simulate.R' 'onLoad.R' 'parameter.R' 'parameter_prior.R'
         'parameter_variation.R' 'parameter_zero_inflation.R'
-        'sample_seed.R' 'search_executable.R' 'segsites.R'
+        'search_executable.R' 'segsites.R' 'simulation_tasks.R'
         'simulator_class.R' 'simulator_ms.R' 'simulator_msms.R'
         'simulator_scrm.R' 'simulator_seqgen.R' 'sumstat.R'
         'sumstat_dna.R' 'sumstat_file.R' 'sumstat_four_gamete.R'
@@ -43,9 +44,10 @@ Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'model.R' 'feature.R'
         'sumstat_trees.R' 'tools.R'
 RoxygenNote: 5.0.1
 NeedsCompilation: yes
-Packaged: 2016-08-03 18:29:31 UTC; paul
+Packaged: 2016-12-29 13:24:59 UTC; paul
 Author: Paul Staab [aut, cre],
-  Dirk Metzler [aut, ths]
+  Dirk Metzler [aut, ths],
+  Jorge E. Amaya Romero [ctb]
 Maintainer: Paul Staab <develop@paulstaab.de>
 Repository: CRAN
-Date/Publication: 2016-08-04 00:59:21
+Date/Publication: 2016-12-29 16:17:25

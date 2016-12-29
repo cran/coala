@@ -9,7 +9,6 @@ model <- coal_model(10, 1) +
 check_model(model)
 model
 
-## ------------------------------------------------------------------------
-activate_ms(priority = 500)
-model
+## ----eval=FALSE----------------------------------------------------------
+#  activate_ms(priority = 500)
 

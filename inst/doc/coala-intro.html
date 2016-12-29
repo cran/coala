@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to Coala</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.4.1</em></h4>
+<h4 class="date"><em>coala 0.5.0</em></h4>
 
 
 
@@ -92,8 +92,8 @@ model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span cla
 ## 
 ## Summary Statistics: None
 ## 
-## Simulator: ms 
-## Command: ms 3 1</code></pre>
+## Simulator: scrm 
+## Command: scrm 3 1</code></pre>
 <p>Models consist of</p>
 <ul>
 <li><em>features</em>, which represent evolutionary forces and events present in the model,</li>
@@ -118,8 +118,8 @@ model</code></pre></div>
 ## 
 ## Summary Statistics: None
 ## 
-## Simulator: ms 
-## Command: ms 3 1 -t 1</code></pre>
+## Simulator: scrm 
+## Command: scrm 3 1 -t 1</code></pre>
 <p>Now, mutations occur with rate 1 and according to an infinite-sites mutation model (IFS). Details of rate and mutation model are given in the help page of the feature (<code>?feat_mutation</code>).</p>
 <p>Coala currently support the features</p>
 <pre><code>##  [1] &quot;feat_growth&quot;            &quot;feat_ignore_singletons&quot;
@@ -156,8 +156,8 @@ model</code></pre></div>
 ## 
 ## Summary Statistics: stat_segsites 
 ## 
-## Simulator: ms 
-## Command: ms 3 1 -t 1</code></pre>
+## Simulator: scrm 
+## Command: scrm 3 1 -t 1</code></pre>
 <p>This adds the <em>segregating sites</em> summary statistic to the model, which is a basic summary statistic in population genetics. Again, refer to <code>?sumstat_seg_sites</code> for details.</p>
 <p>Available summary statistics are:</p>
 <pre><code>##  [1] &quot;sumstat_class&quot;          &quot;sumstat_dna&quot;           
@@ -172,17 +172,16 @@ model</code></pre></div>
 <h1>Simulating the model</h1>
 <p>Now we can simulate the model. The printed output of a model contains information which program will be used for the simulation and which arguments will be used. As coala is in an early stage, please make sure to always check both.</p>
 <p>The function <code>simulate</code> will call the program with the printed options, parse its output and calculated the added summary statistics:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">123</span>)
-sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">seed =</span> <span class="dv">123</span>)</code></pre></div>
 <p>The returned object <code>sumstats</code> is a list, in which each entry corresponds to one summary statistic. As there is only one summary statistic in our model, the list has only one entry:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(sumstats)</code></pre></div>
 <pre><code>## [1] &quot;seg_sites&quot; &quot;pars&quot;      &quot;cmds&quot;      &quot;simulator&quot;</code></pre>
 <p>The structure in <code>sumstats$seg_sites</code> is given by the segregating sites statistic. It is again a list, where each entry represents one locus. For each locus, it contains a matrix as specified in <code>?sumstat_seg_sites</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre></div>
-<pre><code>##      0.551435
-## [1,]        0
-## [2,]        0
-## [3,]        1</code></pre>
+<pre><code>##      0.1041606 0.4223301
+## [1,]         0         0
+## [2,]         1         1
+## [3,]         1         1</code></pre>
 </div>
 <div id="adding-loci" class="section level1">
 <h1>Adding Loci</h1>
@@ -202,20 +201,20 @@ model</code></pre></div>
 ## 
 ## Summary Statistics: stat_segsites 
 ## 
-## Simulator: ms 
-## Command: ms 3 1 -t 1</code></pre>
+## Simulator: scrm 
+## Command: scrm 3 2 -t 1</code></pre>
 <p>Now the model consists of two loci, the first with length 1000, the second with 500. Simulation now produces a segregating sites list with two entries corresponding to the loci:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre></div>
-<pre><code>##      0.3279207 0.9545036
-## [1,]         1         1
+<pre><code>##      0.3144767 0.4034762
+## [1,]         0         0
 ## [2,]         0         0
-## [3,]         0         0</code></pre>
+## [3,]         1         1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">2</span>]]</code></pre></div>
-<pre><code>##     
-## [1,]
-## [2,]
-## [3,]</code></pre>
+<pre><code>##      0.919158
+## [1,]        1
+## [2,]        0
+## [3,]        0</code></pre>
 <p>Another possibility is to add multiple loci with the same length using <code>locus_averaged</code>, which gives better performance than adding the loci one by one. For example</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_averaged</span>(<span class="dv">2</span>, <span class="dv">750</span>)
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
@@ -244,12 +243,12 @@ sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, 
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 sumstats$pars</code></pre></div>
-<pre><code>##     theta 
-## 0.7669117</code></pre>
+<pre><code>##    theta 
+## 6.499852</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 sumstats2$pars</code></pre></div>
 <pre><code>##    theta 
-## 3.554454</code></pre>
+## 4.778454</code></pre>
 </div>
 <div id="parameter-ranges" class="section level3">
 <h3>Parameter Ranges</h3>

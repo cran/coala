@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Using External Simulators</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.4.1</em></h4>
+<h4 class="date"><em>coala 0.5.0</em></h4>
 
 
 
@@ -91,57 +91,50 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <table>
 <thead>
 <tr class="header">
-<th align="left">Simulator</th>
-<th align="left">Priority</th>
-<th align="left">Expected Binary Names</th>
-<th align="left">Environment Var</th>
-<th align="left">Function</th>
+<th>Simulator</th>
+<th>Priority</th>
+<th>Expected Binary Names</th>
+<th>Environment Var</th>
+<th>Function</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">seq-gen</td>
-<td align="left">100</td>
-<td align="left">seqgen, seq-gen, seqgen.exe, seq-gen.exe</td>
-<td align="left">SEQGEN</td>
-<td align="left">activate_seqgen</td>
+<td>seq-gen</td>
+<td>100</td>
+<td>seqgen, seq-gen, seqgen.exe, seq-gen.exe</td>
+<td>SEQGEN</td>
+<td>activate_seqgen</td>
 </tr>
 <tr class="even">
-<td align="left">msms</td>
-<td align="left">200</td>
-<td align="left">msms.jar / java, java.exe</td>
-<td align="left">MSMS / JAVA</td>
-<td align="left">activate_msms</td>
+<td>msms</td>
+<td>200</td>
+<td>msms.jar / java, java.exe</td>
+<td>MSMS / JAVA</td>
+<td>activate_msms</td>
 </tr>
 <tr class="odd">
-<td align="left">ms</td>
-<td align="left">300</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">activate_ms</td>
+<td>ms</td>
+<td>300</td>
+<td></td>
+<td></td>
+<td>activate_ms</td>
 </tr>
 <tr class="even">
-<td align="left">scrm</td>
-<td align="left">400</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<td>scrm</td>
+<td>400</td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <p>You can use the <code>list_simulators()</code> command to view which simulators are currently available:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(coala)
 <span class="kw">list_simulators</span>()</code></pre></div>
-<pre><code>##     name priority
-## 3   scrm      400
-## 1     ms      300
-## 2   msms      200
-## 4 seqgen      100
-##                                                          info
-## 3                                           version : 1.6.0-2
-## 1                                   version : phyclust_0.1.17
-## 2 jar : /home/paul/.config/bin/msms.jar, java : /usr/bin/java
-## 4                     binary : /home/paul/.config/bin/seq-gen</code></pre>
+<pre><code>##   name priority                      info
+## 2 scrm      400         version : 1.7.2-0
+## 1   ms      300 version : phyclust_0.1.18</code></pre>
 </div>
 <div id="priority" class="section level1">
 <h1>Priority</h1>
@@ -152,12 +145,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">check_model</span>(model)</code></pre></div>
 <pre><code>## ms : OK
 ## 
-## msms : OK
-## 
-## scrm : OK
-## 
-## seqgen : Error : seq-gen can not simulate an IFS model
-## </code></pre>
+## scrm : OK</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model</code></pre></div>
 <pre><code>## Features: 
 ## * Sampling of 10 (pop 1) individuals with ploidy 1 at time `0` 
@@ -173,21 +161,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## Simulator: scrm 
 ## Command: scrm 10 1 -t 5</code></pre>
 <p>If multiple simulators can simulate a model, the one with the highest priority is used. In our example, that is <code>scrm</code>. If we would like to use <code>ms</code> instead, we need to raise its priority:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">activate_ms</span>(<span class="dt">priority =</span> <span class="dv">500</span>)
-model</code></pre></div>
-<pre><code>## Features: 
-## * Sampling of 10 (pop 1) individuals with ploidy 1 at time `0` 
-## * Mutations with rate `5` following a IFS mutation model
-## * Generating Seg. Sites
-## 
-## Parameter: None
-## 
-## Loci: 1 locus of length 1000 
-## 
-## Summary Statistics: stat_pi 
-## 
-## Simulator: ms 
-## Command: ms 10 1 -t 5</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">activate_ms</span>(<span class="dt">priority =</span> <span class="dv">500</span>)</code></pre></div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

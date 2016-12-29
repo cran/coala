@@ -1,3 +1,15 @@
+coala 0.5.0
+===========
+
+* Major internal refactoring on how simulators interface with coala (#174).
+* Support for calculating an expanded version of MCMF (#173, #179). This
+  feature was contributed by Jorge E. Amaya Romero (@jorgeamaya).
+* Introduces the optional `locus_group` argument for features. Using it, 
+  features can be defined only for a subset of the loci in the model
+  (#161, #181). Thanks to @andrewparkermorgan for suggesting this feature.
+
+
+
 coala 0.4.1
 ===========
 
