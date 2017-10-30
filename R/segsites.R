@@ -7,7 +7,7 @@
 #' The parts of the S3 class are detailed below.
 #'
 #' A segregating sites object contains all SNPs for one genetic locus. Each
-#' object consists of three parts: A SNP matrix, a vector of SNP positons and
+#' object consists of three parts: A SNP matrix, a vector of SNP positions and
 #' a vector that states which transcript a SNP belong to, if the locus
 #' consists of multiple transscripts ('locus trio').
 #'
@@ -104,7 +104,7 @@ create_locus_trio <- function(left, middle, right) {
   assert_that(length(left) == length(middle))
   assert_that(length(left) == length(right))
 
-  lapply(seq(along = left), function(locus) {
+  lapply(seq_along(left), function(locus) {
     create_segsites(cbind(get_snps(left[[locus]]),
                           get_snps(middle[[locus]]),
                           get_snps(right[[locus]])),

@@ -14,7 +14,7 @@ A character vector containing the files in order in which they
         where created.
 }
 \description{
-This "summmary statistic" returns files with the raw results of
+This "summary statistic" returns files with the raw results of
 the simulation. Multiple files are returned in case coala needs
 multiple calls to simulators to simulate the model. These files
 do not contain any post processing of the results done by coala,
@@ -46,4 +46,3 @@ Other summary statistics: \code{\link{sumstat_dna}},
   \code{\link{sumstat_tajimas_d}},
   \code{\link{sumstat_trees}}
 }
-

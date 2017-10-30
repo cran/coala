@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Adding Summary Statistics and Simulators</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.5.0</em></h4>
+<h4 class="date"><em>coala 0.5.2</em></h4>
 
 
 
@@ -82,12 +82,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 stat_segsites_class &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;stat_segsites&quot;</span>, <span class="dt">inherit =</span> sumstat_class,
   <span class="dt">private =</span> <span class="kw">list</span>(<span class="dt">req_segsites =</span> <span class="ot">TRUE</span>),
   <span class="dt">public =</span> <span class="kw">list</span>(
-    <span class="dt">calculate =</span> function(segsites, trees, files, model, sim_task) segsites
+    <span class="dt">calculate =</span> <span class="cf">function</span>(segsites, trees, files, model, sim_task) segsites
   )
 )
 
-sumstat_seg_sites &lt;-<span class="st"> </span>function(<span class="dt">name =</span> <span class="st">&quot;seg_sites&quot;</span>, <span class="dt">transformation =</span> identity) {
-  stat_segsites_class$<span class="kw">new</span>(name, transformation)
+sumstat_seg_sites &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">name =</span> <span class="st">&quot;seg_sites&quot;</span>, <span class="dt">transformation =</span> identity) {
+  stat_segsites_class<span class="op">$</span><span class="kw">new</span>(name, transformation)
 }</code></pre></div>
 <p>The calculate is called after the simulation with the following arguments:</p>
 <ul>
@@ -105,14 +105,14 @@ sumstat_seg_sites &lt;-<span class="st"> </span>function(<span class="dt">name =
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stat_file_class &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;stat_file&quot;</span>, <span class="dt">inherit =</span> sumstat_class,
   <span class="dt">private =</span> <span class="kw">list</span>(<span class="dt">folder =</span> <span class="ot">NULL</span>, <span class="dt">req_files =</span> <span class="ot">TRUE</span>),
   <span class="dt">public =</span> <span class="kw">list</span>(
-    <span class="dt">initialize =</span> function(folder) {
+    <span class="dt">initialize =</span> <span class="cf">function</span>(folder) {
       <span class="kw">dir.create</span>(folder, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)
-      private$folder &lt;-<span class="st"> </span>folder
-      super$<span class="kw">initialize</span>(<span class="st">&quot;file&quot;</span>, identity)
+      private<span class="op">$</span>folder &lt;-<span class="st"> </span>folder
+      super<span class="op">$</span><span class="kw">initialize</span>(<span class="st">&quot;file&quot;</span>, identity)
     },
-    <span class="dt">calculate =</span> function(seg_sites, trees, files, model, sim_task) {
-      <span class="kw">file.copy</span>(files, private$folder, <span class="dt">overwrite =</span> <span class="ot">FALSE</span>)
-      <span class="kw">file.path</span>(private$folder, <span class="kw">basename</span>(files))
+    <span class="dt">calculate =</span> <span class="cf">function</span>(seg_sites, trees, files, model, sim_task) {
+      <span class="kw">file.copy</span>(files, private<span class="op">$</span>folder, <span class="dt">overwrite =</span> <span class="ot">FALSE</span>)
+      <span class="kw">file.path</span>(private<span class="op">$</span>folder, <span class="kw">basename</span>(files))
     }
   )
 )</code></pre></div>
@@ -132,7 +132,7 @@ sumstat_seg_sites &lt;-<span class="st"> </span>function(<span class="dt">name =
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

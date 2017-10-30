@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Introduction to Coala</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.5.0</em></h4>
+<h4 class="date"><em>coala 0.5.2</em></h4>
 
 
 
@@ -106,7 +106,7 @@ model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span cla
 <div id="adding-features" class="section level1">
 <h1>Adding Features</h1>
 <p>For simulating sequences, we need to add mutations to the model. To do so, we create a corresponding feature using <code>feat_mutation</code> and add it to the existing model using the plus operator:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model <span class="op">+</span><span class="st"> </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>)
 model</code></pre></div>
 <pre><code>## Features: 
 ## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
@@ -131,9 +131,9 @@ model</code></pre></div>
 <div id="multiple-populations" class="section level2">
 <h2>Multiple Populations</h2>
 <p>If we build a model consisting of multiple populations, we need to state the sample sizes as a vector of sample sizes for the different populations. The lines,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">0</span>), <span class="dt">loci_number =</span> <span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">feat_migration</span>(<span class="dt">rate =</span> <span class="fl">0.5</span>, <span class="dt">symmetric =</span> <span class="ot">TRUE</span>) +
-<span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.5</span>, <span class="dv">3</span>, <span class="dv">2</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">0</span>), <span class="dt">loci_number =</span> <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">feat_migration</span>(<span class="dt">rate =</span> <span class="fl">0.5</span>, <span class="dt">symmetric =</span> <span class="ot">TRUE</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.5</span>, <span class="dv">3</span>, <span class="dv">2</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.8</span>, <span class="dv">2</span>, <span class="dv">1</span>)</code></pre></div>
 <p>create a model of three populations, with a symmetric migration rate of <code>0.5</code> between them. When viewed backwards in time, population 3 merges into population 2 <code>0.5</code> coalescent time units in the past and population 2 into population 1 <code>0.3</code> time units further into the past. Looking forwards in time, this represents two speciation events with migration going on afterwards. At time <code>0</code> five haploids are sampled from population 1 and two from population 2. Please note that sample sizes for all populations must be given, even if no haploid is sampled from a population, as it is the case for population 3 here.</p>
 </div>
@@ -141,8 +141,8 @@ model</code></pre></div>
 <div id="adding-summary-statistics" class="section level1">
 <h1>Adding Summary Statistics</h1>
 <p>Adding summary statistics works in a similar fashion as adding features:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">3</span>, <span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">3</span>, <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
 model</code></pre></div>
 <pre><code>## Features: 
@@ -177,7 +177,7 @@ model</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(sumstats)</code></pre></div>
 <pre><code>## [1] &quot;seg_sites&quot; &quot;pars&quot;      &quot;cmds&quot;      &quot;simulator&quot;</code></pre>
 <p>The structure in <code>sumstats$seg_sites</code> is given by the segregating sites statistic. It is again a list, where each entry represents one locus. For each locus, it contains a matrix as specified in <code>?sumstat_seg_sites</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats<span class="op">$</span>seg_sites[[<span class="dv">1</span>]]</code></pre></div>
 <pre><code>##      0.1041606 0.4223301
 ## [1,]         0         0
 ## [2,]         1         1
@@ -186,7 +186,7 @@ model</code></pre></div>
 <div id="adding-loci" class="section level1">
 <h1>Adding Loci</h1>
 <p>If we want to have more loci in a model, we can add them using the <code>locus_</code> functions. The most basic option is to add an additional locus with a different length:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_single</span>(<span class="dv">500</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model <span class="op">+</span><span class="st"> </span><span class="kw">locus_single</span>(<span class="dv">500</span>)
 model</code></pre></div>
 <pre><code>## Features: 
 ## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
@@ -205,20 +205,20 @@ model</code></pre></div>
 ## Command: scrm 3 2 -t 1</code></pre>
 <p>Now the model consists of two loci, the first with length 1000, the second with 500. Simulation now produces a segregating sites list with two entries corresponding to the loci:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-sumstats$seg_sites[[<span class="dv">1</span>]]</code></pre></div>
+sumstats<span class="op">$</span>seg_sites[[<span class="dv">1</span>]]</code></pre></div>
 <pre><code>##      0.3144767 0.4034762
 ## [1,]         0         0
 ## [2,]         0         0
 ## [3,]         1         1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats$seg_sites[[<span class="dv">2</span>]]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats<span class="op">$</span>seg_sites[[<span class="dv">2</span>]]</code></pre></div>
 <pre><code>##      0.919158
 ## [1,]        1
 ## [2,]        0
 ## [3,]        0</code></pre>
 <p>Another possibility is to add multiple loci with the same length using <code>locus_averaged</code>, which gives better performance than adding the loci one by one. For example</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model +<span class="st"> </span><span class="kw">locus_averaged</span>(<span class="dv">2</span>, <span class="dv">750</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model <span class="op">+</span><span class="st"> </span><span class="kw">locus_averaged</span>(<span class="dv">2</span>, <span class="dv">750</span>)
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-<span class="kw">length</span>(sumstats$seg_sites)</code></pre></div>
+<span class="kw">length</span>(sumstats<span class="op">$</span>seg_sites)</code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>adds two more loci with length of 750bp to the model.</p>
 </div>
@@ -228,8 +228,8 @@ sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 <div id="named-parameters" class="section level3">
 <h3>Named Parameters</h3>
 <p>Named parameters values can be specified in the simulation command. If we want, for example, to launch simulations for a model with different values of the mutation rate, we can use a named parameter:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
 sumstats1 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">2.5</span>))
 sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">4.3</span>))</code></pre></div>
@@ -238,32 +238,32 @@ sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, 
 <h3>Parameters with Priors</h3>
 <p>A parameter distributed according to a prior can be specified using the <code>par_prior</code> function. The function’s first argument is a name for the parameter, the second an expression that, when evaluated, produces a sample from the prior distribution.</p>
 <p>So if we want the mutation to follow a uniform distribution between <code>0</code> and <code>10</code>, we can use:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_prior</span>(<span class="st">&quot;theta&quot;</span>, <span class="kw">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">10</span>))) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_prior</span>(<span class="st">&quot;theta&quot;</span>, <span class="kw">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">10</span>))) <span class="op">+</span>
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
 sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-sumstats$pars</code></pre></div>
+sumstats<span class="op">$</span>pars</code></pre></div>
 <pre><code>##    theta 
 ## 6.499852</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-sumstats2$pars</code></pre></div>
+sumstats2<span class="op">$</span>pars</code></pre></div>
 <pre><code>##    theta 
 ## 4.778454</code></pre>
 </div>
 <div id="parameter-ranges" class="section level3">
 <h3>Parameter Ranges</h3>
 <p>For simulations that will we used for parameter inference with the R package <code>jaatha</code>, you need to give a range of possible values for each parameter. This is done using <code>par_range</code>. For instance</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_range</span>(<span class="st">&quot;theta&quot;</span>, <span class="fl">0.1</span>, <span class="dv">5</span>)) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_range</span>(<span class="st">&quot;theta&quot;</span>, <span class="fl">0.1</span>, <span class="dv">5</span>)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">sumstat_seg_sites</span>()</code></pre></div>
 <p>sets a possible range from <em>0.1</em> to <em>5</em> for the mutation rate. The actual rate is given in the <code>simulate</code> function, just as with named parameters.</p>
 </div>
 <div id="expressions" class="section level3">
 <h3>Expressions</h3>
 <p>Finally, there is a very powerful type of parameters generated with <code>par_expr</code>. Similar to parameters with priors, the value of the parameter is given as an R expression, which is evaluated before simulation. Unlinke <code>par_prior</code>, this expression can contain other named parameters. For example</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">4</span>, <span class="dv">2</span>) +
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) +
-<span class="st">  </span><span class="kw">feat_recombination</span>(<span class="dt">rate =</span> <span class="kw">par_expr</span>(theta *<span class="st"> </span><span class="dv">2</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">4</span>, <span class="dv">2</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">feat_recombination</span>(<span class="dt">rate =</span> <span class="kw">par_expr</span>(theta <span class="op">*</span><span class="st"> </span><span class="dv">2</span>))</code></pre></div>
 <p>creates a model with a a recombination rate that always is twice as high as the mutation rate.</p>
 </div>
 </div>
@@ -275,7 +275,7 @@ sumstats2$pars</code></pre></div>
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

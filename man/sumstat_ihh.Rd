@@ -31,7 +31,7 @@ If \code{calc_ihs = FALSE}, a data.frame with values for
   iHH and iES is returned. Otherwise, a list of two data frames are
   returned, one for IHH and IES values and the other one for IHS values.
 
-  In all `data.frames` rows are SNPs and the colums present the following
+  In all `data.frames` rows are SNPs and the columns present the following
   values for each SNP:
   \itemize{
    \item{CHR: The SNP's locus}
@@ -64,6 +64,7 @@ statistic for a publication.
                        genome. PLoS Biol, 4(3):e72, Mar 2006.}
  }
 }
+
 \examples{
   model <- coal_model(20, 1, 1000) +
     feat_mutation(1000) +
@@ -71,9 +72,6 @@ statistic for a publication.
 \dontrun{
     stat <- simulate(model)
     print(stat$ihh)}
-}
-\author{
-Paul Staab
 }
 \seealso{
 To create a demographic model: \code{\link{coal_model}}
@@ -91,4 +89,6 @@ Other summary statistics: \code{\link{sumstat_dna}},
   \code{\link{sumstat_tajimas_d}},
   \code{\link{sumstat_trees}}
 }
-
+\author{
+Paul Staab
+}

@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -69,7 +69,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Using External Simulators</h1>
 <h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.5.0</em></h4>
+<h4 class="date"><em>coala 0.5.2</em></h4>
 
 
 
@@ -134,13 +134,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">list_simulators</span>()</code></pre></div>
 <pre><code>##   name priority                      info
 ## 2 scrm      400         version : 1.7.2-0
-## 1   ms      300 version : phyclust_0.1.18</code></pre>
+## 1   ms      300 version : phyclust_0.1.20</code></pre>
 </div>
 <div id="priority" class="section level1">
 <h1>Priority</h1>
 <p>The <code>check_model</code> function checks which simulators support a specific model, and states the problems which coala has detected with the simulators that do not support it. For example, a simple model with infinite-sites mutations (IFS) can be simulated with <code>scrm</code> or – if installed – with <code>ms</code> and <code>msms</code>, but not with <code>seq-gen</code> because the latter generates finite-sites mutations:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">10</span>, <span class="dv">1</span>) +
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dv">5</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">10</span>, <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dv">5</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">sumstat_nucleotide_div</span>()
 <span class="kw">check_model</span>(model)</code></pre></div>
 <pre><code>## ms : OK
@@ -180,7 +180,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

@@ -25,7 +25,7 @@ returned instead of the original values.}
 }
 \value{
 The JSFS, given as an array. The dimensions correspond to the
-  populatons as given in the \code{populations} argument.
+  populations as given in the \code{populations} argument.
 }
 \description{
 The summary statistic calculates the joint site frequency
@@ -57,4 +57,3 @@ Other summary statistics: \code{\link{sumstat_dna}},
   \code{\link{sumstat_tajimas_d}},
   \code{\link{sumstat_trees}}
 }
-

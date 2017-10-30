@@ -38,7 +38,7 @@ positions: 0.3718 0.8443
 01
 01
 10
-", file = sim_output);
+", file = sim_output)
 
   output <- parse_ms_output(list(sim_output), 3, 2)
 
@@ -110,4 +110,19 @@ test_that("ms simulation works", {
   task <- ms$create_task(model, NULL, 1)
   stats <- ms$simulate(model, task)
   expect_is(stats, "list")
+})
+
+
+test_that("ms can simulate files", {
+  if (!has_ms()) skip("ms not installed")
+  ms <- get_simulator("ms")
+  folder <- tempfile("ms-filetest")
+  model <- coal_model(10, 1) +
+    feat_mutation(5) +
+    sumstat_file(folder)
+  task <- ms$create_task(model, NULL, 1)
+  stats <- ms$simulate(model, task)
+  expect_true(!is.null(stats$files))
+  unlink(stats$files)
+  unlink(folder, recursive = TRUE)
 })
