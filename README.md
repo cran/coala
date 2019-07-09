@@ -1,7 +1,7 @@
 coala
 =====
 
-[![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+[![Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows.](https://www.repostatus.org/badges/latest/inactive.svg)](https://www.repostatus.org/#inactive)
 [![Linux Build Status](https://travis-ci.org/statgenlmu/coala.png?branch=master)](https://travis-ci.org/statgenlmu/coala) 
 [![Windows Build status](https://ci.appveyor.com/api/projects/status/uoduv0q64ddnqfva/branch/master?svg=true)](https://ci.appveyor.com/project/paulstaab/coala-02w83/branch/master)
 [![Coverage Status](https://coveralls.io/repos/statgenlmu/coala/badge.svg?branch=master)](https://coveralls.io/r/statgenlmu/coala)
@@ -47,7 +47,7 @@ gives an example on how coala can be used to conduct the simulations for [Approx
 Computation](https://en.wikipedia.org/wiki/Approximate_Bayesian_computation).
 
 Also take a look at the [project wiki](https://github.com/statgenlmu/coala/wiki) for additional
-resources. You can ask questions on coala's [mailing list](https://groups.google.com/forum/#!forum/coala-pkg). 
+resources.
 
 
 Example

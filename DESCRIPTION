@@ -1,5 +1,5 @@
 Package: coala
-Version: 0.5.2
+Version: 0.5.3
 License: MIT + file LICENSE
 Title: A Framework for Coalescent Simulation
 Authors@R: c(
@@ -17,7 +17,7 @@ Description: Coalescent simulators can rapidly simulate biological sequences
     mutation models by combining the simulators with the program 'seq-gen'.
 Depends: R (>= 3.1.0)
 Imports: assertthat (>= 0.1), digest, methods, parallel, R6 (>= 2.0.1),
-        Rcpp (>= 0.11.0), rehh (>= 2.0.0), scrm (>= 1.6.0-2), stats,
+        Rcpp (>= 0.11.0), rehh (>= 3.0.0), scrm (>= 1.6.0-2), stats,
         utils
 Suggests: abc (>= 2.0), knitr, PopGenome (>= 2.1.0), phyclust (>=
         0.1-16), rmarkdown, testthat (>= 0.11.0)
@@ -42,12 +42,12 @@ Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'model.R' 'feature.R'
         'sumstat_nucleotide_div.R' 'sumstat_omega.R'
         'sumstat_seg_sites.R' 'sumstat_sfs.R' 'sumstat_tajimas_d.R'
         'sumstat_trees.R' 'tools.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 NeedsCompilation: yes
-Packaged: 2017-10-30 15:42:59 UTC; paul
+Packaged: 2019-07-09 19:30:39 UTC; paul
 Author: Paul Staab [aut, cre],
   Dirk Metzler [aut, ths],
   Jorge E. Amaya Romero [ctb]
 Maintainer: Paul Staab <develop@paulstaab.de>
 Repository: CRAN
-Date/Publication: 2017-10-30 15:56:43 UTC
+Date/Publication: 2019-07-09 20:11:56 UTC

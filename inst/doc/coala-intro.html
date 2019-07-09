@@ -18,47 +18,280 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -68,22 +301,22 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <h1 class="title toc-ignore">Introduction to Coala</h1>
-<h4 class="author"><em>Paul Staab</em></h4>
-<h4 class="date"><em>coala 0.5.2</em></h4>
+<h4 class="author">Paul Staab</h4>
+<h4 class="date">coala 0.5.3</h4>
 
 
 
 <p>Coalescent simulation refers to the idea of simulating the evolution of biological sequences like DNA by tracing their ancestry back in time. The <code>coala</code> package is an interface for calling a number of commonly used coalescent simulators from R. It should be able to use the simulator <code>scrm</code> out of the box. Other simulators need to be installed separately and must be activated explicitly. This is described in the <code>installation</code> vignette:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">vignette</span>(<span class="st">&quot;coala-install&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;coala&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">vignette</span>(<span class="st">&quot;coala-install&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;coala&quot;</span>)</a></code></pre></div>
 <p>In this introduction we will stick to using <code>scrm</code>.</p>
 <div id="creating-a-model" class="section level1">
 <h1>Creating a model</h1>
 <p>In order to conduct simulations, we first need to specify the components of the simulation model. The function <code>coal_model</code> creates a basic coalescent model:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(coala)
-model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="dv">3</span>, <span class="dt">loci_number =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(coala)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="dv">3</span>, <span class="dt">loci_number =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p>This creates a basic model with one population of constant size. One genetic locus for three haplotypes is sampled from the population.</p>
 <p>Printing the model gives a short summary of this content:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">model</a></code></pre></div>
 <pre><code>## Features: Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
 ## 
 ## Parameter: None
@@ -106,8 +339,8 @@ model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span cla
 <div id="adding-features" class="section level1">
 <h1>Adding Features</h1>
 <p>For simulating sequences, we need to add mutations to the model. To do so, we create a corresponding feature using <code>feat_mutation</code> and add it to the existing model using the plus operator:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model <span class="op">+</span><span class="st"> </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>)
-model</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">model &lt;-<span class="st"> </span>model <span class="op">+</span><span class="st"> </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">model</a></code></pre></div>
 <pre><code>## Features: 
 ## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
 ## * Mutations with rate `1` following a IFS mutation model
@@ -131,20 +364,20 @@ model</code></pre></div>
 <div id="multiple-populations" class="section level2">
 <h2>Multiple Populations</h2>
 <p>If we build a model consisting of multiple populations, we need to state the sample sizes as a vector of sample sizes for the different populations. The lines,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">0</span>), <span class="dt">loci_number =</span> <span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">feat_migration</span>(<span class="dt">rate =</span> <span class="fl">0.5</span>, <span class="dt">symmetric =</span> <span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.5</span>, <span class="dv">3</span>, <span class="dv">2</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.8</span>, <span class="dv">2</span>, <span class="dv">1</span>)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dt">sample_size =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">0</span>), <span class="dt">loci_number =</span> <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">feat_migration</span>(<span class="dt">rate =</span> <span class="fl">0.5</span>, <span class="dt">symmetric =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.5</span>, <span class="dv">3</span>, <span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">feat_pop_merge</span>(<span class="fl">0.8</span>, <span class="dv">2</span>, <span class="dv">1</span>)</a></code></pre></div>
 <p>create a model of three populations, with a symmetric migration rate of <code>0.5</code> between them. When viewed backwards in time, population 3 merges into population 2 <code>0.5</code> coalescent time units in the past and population 2 into population 1 <code>0.3</code> time units further into the past. Looking forwards in time, this represents two speciation events with migration going on afterwards. At time <code>0</code> five haploids are sampled from population 1 and two from population 2. Please note that sample sizes for all populations must be given, even if no haploid is sampled from a population, as it is the case for population 3 here.</p>
 </div>
 </div>
 <div id="adding-summary-statistics" class="section level1">
 <h1>Adding Summary Statistics</h1>
 <p>Adding summary statistics works in a similar fashion as adding features:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">3</span>, <span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
-model</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">3</span>, <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">sumstat_seg_sites</span>()</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">model</a></code></pre></div>
 <pre><code>## Features: 
 ## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
 ## * Mutations with rate `1` following a IFS mutation model
@@ -172,12 +405,12 @@ model</code></pre></div>
 <h1>Simulating the model</h1>
 <p>Now we can simulate the model. The printed output of a model contains information which program will be used for the simulation and which arguments will be used. As coala is in an early stage, please make sure to always check both.</p>
 <p>The function <code>simulate</code> will call the program with the printed options, parse its output and calculated the added summary statistics:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">seed =</span> <span class="dv">123</span>)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">seed =</span> <span class="dv">123</span>)</a></code></pre></div>
 <p>The returned object <code>sumstats</code> is a list, in which each entry corresponds to one summary statistic. As there is only one summary statistic in our model, the list has only one entry:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(sumstats)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">names</span>(sumstats)</a></code></pre></div>
 <pre><code>## [1] &quot;seg_sites&quot; &quot;pars&quot;      &quot;cmds&quot;      &quot;simulator&quot;</code></pre>
 <p>The structure in <code>sumstats$seg_sites</code> is given by the segregating sites statistic. It is again a list, where each entry represents one locus. For each locus, it contains a matrix as specified in <code>?sumstat_seg_sites</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats<span class="op">$</span>seg_sites[[<span class="dv">1</span>]]</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">sumstats<span class="op">$</span>seg_sites[[<span class="dv">1</span>]]</a></code></pre></div>
 <pre><code>##      0.1041606 0.4223301
 ## [1,]         0         0
 ## [2,]         1         1
@@ -186,8 +419,8 @@ model</code></pre></div>
 <div id="adding-loci" class="section level1">
 <h1>Adding Loci</h1>
 <p>If we want to have more loci in a model, we can add them using the <code>locus_</code> functions. The most basic option is to add an additional locus with a different length:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model <span class="op">+</span><span class="st"> </span><span class="kw">locus_single</span>(<span class="dv">500</span>)
-model</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">model &lt;-<span class="st"> </span>model <span class="op">+</span><span class="st"> </span><span class="kw">locus_single</span>(<span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">model</a></code></pre></div>
 <pre><code>## Features: 
 ## * Sampling of 3 (pop 1) individuals with ploidy 1 at time `0` 
 ## * Mutations with rate `1` following a IFS mutation model
@@ -204,21 +437,21 @@ model</code></pre></div>
 ## Simulator: scrm 
 ## Command: scrm 3 2 -t 1</code></pre>
 <p>Now the model consists of two loci, the first with length 1000, the second with 500. Simulation now produces a segregating sites list with two entries corresponding to the loci:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-sumstats<span class="op">$</span>seg_sites[[<span class="dv">1</span>]]</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">sumstats<span class="op">$</span>seg_sites[[<span class="dv">1</span>]]</a></code></pre></div>
 <pre><code>##      0.3144767 0.4034762
 ## [1,]         0         0
 ## [2,]         0         0
 ## [3,]         1         1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats<span class="op">$</span>seg_sites[[<span class="dv">2</span>]]</code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">sumstats<span class="op">$</span>seg_sites[[<span class="dv">2</span>]]</a></code></pre></div>
 <pre><code>##      0.919158
 ## [1,]        1
 ## [2,]        0
 ## [3,]        0</code></pre>
 <p>Another possibility is to add multiple loci with the same length using <code>locus_averaged</code>, which gives better performance than adding the loci one by one. For example</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span>model <span class="op">+</span><span class="st"> </span><span class="kw">locus_averaged</span>(<span class="dv">2</span>, <span class="dv">750</span>)
-sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-<span class="kw">length</span>(sumstats<span class="op">$</span>seg_sites)</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">model &lt;-<span class="st"> </span>model <span class="op">+</span><span class="st"> </span><span class="kw">locus_averaged</span>(<span class="dv">2</span>, <span class="dv">750</span>)</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="kw">length</span>(sumstats<span class="op">$</span>seg_sites)</a></code></pre></div>
 <pre><code>## [1] 4</code></pre>
 <p>adds two more loci with length of 750bp to the model.</p>
 </div>
@@ -228,42 +461,42 @@ sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
 <div id="named-parameters" class="section level3">
 <h3>Named Parameters</h3>
 <p>Named parameters values can be specified in the simulation command. If we want, for example, to launch simulations for a model with different values of the mutation rate, we can use a named parameter:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
-sumstats1 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">2.5</span>))
-sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">4.3</span>))</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="st">  </span><span class="kw">sumstat_seg_sites</span>()</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">sumstats1 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">2.5</span>))</a>
+<a class="sourceLine" id="cb25-5" data-line-number="5">sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model, <span class="dt">pars =</span> <span class="kw">c</span>(<span class="dt">theta =</span> <span class="fl">4.3</span>))</a></code></pre></div>
 </div>
 <div id="parameters-with-priors" class="section level3">
 <h3>Parameters with Priors</h3>
 <p>A parameter distributed according to a prior can be specified using the <code>par_prior</code> function. The function’s first argument is a name for the parameter, the second an expression that, when evaluated, produces a sample from the prior distribution.</p>
 <p>So if we want the mutation to follow a uniform distribution between <code>0</code> and <code>10</code>, we can use:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_prior</span>(<span class="st">&quot;theta&quot;</span>, <span class="kw">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">10</span>))) <span class="op">+</span>
-<span class="st">  </span><span class="kw">sumstat_seg_sites</span>()
-sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-sumstats<span class="op">$</span>pars</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_prior</span>(<span class="st">&quot;theta&quot;</span>, <span class="kw">runif</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">10</span>))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="st">  </span><span class="kw">sumstat_seg_sites</span>()</a>
+<a class="sourceLine" id="cb26-4" data-line-number="4">sumstats &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</a>
+<a class="sourceLine" id="cb26-5" data-line-number="5">sumstats<span class="op">$</span>pars</a></code></pre></div>
 <pre><code>##    theta 
 ## 6.499852</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)
-sumstats2<span class="op">$</span>pars</code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">sumstats2 &lt;-<span class="st"> </span><span class="kw">simulate</span>(model)</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">sumstats2<span class="op">$</span>pars</a></code></pre></div>
 <pre><code>##    theta 
 ## 4.778454</code></pre>
 </div>
 <div id="parameter-ranges" class="section level3">
 <h3>Parameter Ranges</h3>
 <p>For simulations that will we used for parameter inference with the R package <code>jaatha</code>, you need to give a range of possible values for each parameter. This is done using <code>par_range</code>. For instance</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_range</span>(<span class="st">&quot;theta&quot;</span>, <span class="fl">0.1</span>, <span class="dv">5</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">sumstat_seg_sites</span>()</code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">5</span>, <span class="dv">1</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_range</span>(<span class="st">&quot;theta&quot;</span>, <span class="fl">0.1</span>, <span class="dv">5</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">  </span><span class="kw">sumstat_seg_sites</span>()</a></code></pre></div>
 <p>sets a possible range from <em>0.1</em> to <em>5</em> for the mutation rate. The actual rate is given in the <code>simulate</code> function, just as with named parameters.</p>
 </div>
 <div id="expressions" class="section level3">
 <h3>Expressions</h3>
 <p>Finally, there is a very powerful type of parameters generated with <code>par_expr</code>. Similar to parameters with priors, the value of the parameter is given as an R expression, which is evaluated before simulation. Unlinke <code>par_prior</code>, this expression can contain other named parameters. For example</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">4</span>, <span class="dv">2</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">feat_recombination</span>(<span class="dt">rate =</span> <span class="kw">par_expr</span>(theta <span class="op">*</span><span class="st"> </span><span class="dv">2</span>))</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="dv">4</span>, <span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dt">rate =</span> <span class="kw">par_named</span>(<span class="st">&quot;theta&quot;</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="st">  </span><span class="kw">feat_recombination</span>(<span class="dt">rate =</span> <span class="kw">par_expr</span>(theta <span class="op">*</span><span class="st"> </span><span class="dv">2</span>))</a></code></pre></div>
 <p>creates a model with a a recombination rate that always is twice as high as the mutation rate.</p>
 </div>
 </div>
