@@ -1,4 +1,4 @@
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(R6)
 library(coala)
 stat_segsites_class <- R6Class("stat_segsites", inherit = sumstat_class,
@@ -12,7 +12,7 @@ sumstat_seg_sites <- function(name = "seg_sites", transformation = identity) {
   stat_segsites_class$new(name, transformation)
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 stat_file_class <- R6Class("stat_file", inherit = sumstat_class,
   private = list(folder = NULL, req_files = TRUE),
   public = list(

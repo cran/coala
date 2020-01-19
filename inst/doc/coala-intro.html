@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -95,7 +95,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -302,7 +302,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Introduction to Coala</h1>
 <h4 class="author">Paul Staab</h4>
-<h4 class="date">coala 0.5.3</h4>
+<h4 class="date">coala 0.6.0</h4>
 
 
 
@@ -355,11 +355,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## Command: scrm 3 1 -t 1</code></pre>
 <p>Now, mutations occur with rate 1 and according to an infinite-sites mutation model (IFS). Details of rate and mutation model are given in the help page of the feature (<code>?feat_mutation</code>).</p>
 <p>Coala currently support the features</p>
-<pre><code>##  [1] &quot;feat_growth&quot;            &quot;feat_ignore_singletons&quot;
-##  [3] &quot;feat_migration&quot;         &quot;feat_mutation&quot;         
-##  [5] &quot;feat_outgroup&quot;          &quot;feat_pop_merge&quot;        
-##  [7] &quot;feat_recombination&quot;     &quot;feat_selection&quot;        
-##  [9] &quot;feat_size_change&quot;       &quot;feat_unphased&quot;</code></pre>
+<pre><code>##  [1] &quot;feat_growth&quot;            &quot;feat_ignore_singletons&quot; &quot;feat_migration&quot;        
+##  [4] &quot;feat_mutation&quot;          &quot;feat_outgroup&quot;          &quot;feat_pop_merge&quot;        
+##  [7] &quot;feat_recombination&quot;     &quot;feat_selection&quot;         &quot;feat_size_change&quot;      
+## [10] &quot;feat_unphased&quot;</code></pre>
 <p>However, not all combination of all features might be possible. Please refer to the features help pages for detailed information.</p>
 <div id="multiple-populations" class="section level2">
 <h2>Multiple Populations</h2>
@@ -393,12 +392,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## Command: scrm 3 1 -t 1</code></pre>
 <p>This adds the <em>segregating sites</em> summary statistic to the model, which is a basic summary statistic in population genetics. Again, refer to <code>?sumstat_seg_sites</code> for details.</p>
 <p>Available summary statistics are:</p>
-<pre><code>##  [1] &quot;sumstat_class&quot;          &quot;sumstat_dna&quot;           
-##  [3] &quot;sumstat_file&quot;           &quot;sumstat_four_gamete&quot;   
-##  [5] &quot;sumstat_ihh&quot;            &quot;sumstat_jsfs&quot;          
-##  [7] &quot;sumstat_mcmf&quot;           &quot;sumstat_nucleotide_div&quot;
-##  [9] &quot;sumstat_omega&quot;          &quot;sumstat_seg_sites&quot;     
-## [11] &quot;sumstat_sfs&quot;            &quot;sumstat_tajimas_d&quot;     
+<pre><code>##  [1] &quot;sumstat_class&quot;          &quot;sumstat_dna&quot;            &quot;sumstat_file&quot;          
+##  [4] &quot;sumstat_four_gamete&quot;    &quot;sumstat_ihh&quot;            &quot;sumstat_jsfs&quot;          
+##  [7] &quot;sumstat_mcmf&quot;           &quot;sumstat_nucleotide_div&quot; &quot;sumstat_omega&quot;         
+## [10] &quot;sumstat_seg_sites&quot;      &quot;sumstat_sfs&quot;            &quot;sumstat_tajimas_d&quot;     
 ## [13] &quot;sumstat_trees&quot;</code></pre>
 </div>
 <div id="simulating-the-model" class="section level1">
@@ -501,6 +498,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
