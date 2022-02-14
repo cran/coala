@@ -1,17 +1,21 @@
 Package: coala
-Version: 0.6.0
+Version: 0.6.1
 License: MIT + file LICENSE
 Title: A Framework for Coalescent Simulation
 Authors@R: c(
-    person('Paul', 'Staab', , 'develop@paulstaab.de', role=c('aut', 'cre')),
-    person('Dirk', 'Metzler', , 'metzler@bio.lmu.de', role=c('aut', 'ths')),
+    person('Paul', 'Staab', , 'develop@paulstaab.de', role=c('aut')),
+    person('Dirk', 'Metzler', , 'metzler@bio.lmu.de', role=c('aut', 'ths', 'cre')),
     person('Jorge E.', 'Amaya Romero', role = 'ctb'))
+Author: Paul Staab [aut],
+  Dirk Metzler [aut, ths, cre],
+  Jorge E. Amaya Romero [ctb]
 BugReports: https://github.com/statgenlmu/coala/issues
 URL: https://github.com/statgenlmu/coala
 Description: Coalescent simulators can rapidly simulate biological sequences
     evolving according to a given model of evolution.
     You can use this package to specify such models, to conduct the simulations
-    and to calculate additional statistics from the results.
+    and to calculate additional statistics from the results (Staab, Metzler,
+    2016 <doi:10.1093/bioinformatics/btw098>).
     It relies on existing simulators for doing the simulation, and currently
     supports the programs 'ms', 'msms' and 'scrm'. It also supports finite-sites
     mutation models by combining the simulators with the program 'seq-gen'.
@@ -44,10 +48,7 @@ Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'model.R' 'feature.R'
         'sumstat_trees.R' 'tools.R'
 RoxygenNote: 7.0.2
 NeedsCompilation: yes
-Packaged: 2020-01-19 13:02:55 UTC; paul
-Author: Paul Staab [aut, cre],
-  Dirk Metzler [aut, ths],
-  Jorge E. Amaya Romero [ctb]
-Maintainer: Paul Staab <develop@paulstaab.de>
+Packaged: 2022-02-14 14:43:03 UTC; dirk
+Maintainer: Dirk Metzler <metzler@bio.lmu.de>
 Repository: CRAN
-Date/Publication: 2020-01-19 17:40:06 UTC
+Date/Publication: 2022-02-14 15:40:06 UTC

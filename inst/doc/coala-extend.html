@@ -8,37 +8,83 @@
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Paul Staab" />
 
 
 <title>Adding Summary Statistics and Simulators</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -47,9 +93,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -106,6 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
+
 <style type="text/css">body {
 background-color: #fff;
 margin: 1em auto;
@@ -116,9 +163,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -287,7 +331,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -302,7 +347,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Adding Summary Statistics and Simulators</h1>
 <h4 class="author">Paul Staab</h4>
-<h4 class="date">coala 0.6.0</h4>
+<h4 class="date">coala 0.6.1</h4>
 
 
 
@@ -310,18 +355,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="summary-statistics" class="section level2">
 <h2>Summary Statistics</h2>
 <p>Summary statistics are derived from the <code>sumstat_class</code> base class. They primarily consist of a <code>calculate</code> function that – well – calculates the statistics value from the simulation results. A simple example is the <code>sumstat_seg_sites()</code> statistic:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(R6)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(coala)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">stat_segsites_class &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;stat_segsites&quot;</span>, <span class="dt">inherit =</span> sumstat_class,</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="dt">private =</span> <span class="kw">list</span>(<span class="dt">req_segsites =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">  <span class="dt">public =</span> <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">    <span class="dt">calculate =</span> <span class="cf">function</span>(segsites, trees, files, model, sim_task) segsites</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">  )</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">sumstat_seg_sites &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">name =</span> <span class="st">&quot;seg_sites&quot;</span>, <span class="dt">transformation =</span> identity) {</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">  stat_segsites_class<span class="op">$</span><span class="kw">new</span>(name, transformation)</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(R6)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(coala)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>stat_segsites_class &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;stat_segsites&quot;</span>, <span class="dt">inherit =</span> sumstat_class,</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="dt">private =</span> <span class="kw">list</span>(<span class="dt">req_segsites =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="dt">public =</span> <span class="kw">list</span>(</span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="dt">calculate =</span> <span class="cf">function</span>(segsites, trees, files, model, sim_task) segsites</span>
+<span id="cb1-7"><a href="#cb1-7"></a>  )</span>
+<span id="cb1-8"><a href="#cb1-8"></a>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a>sumstat_seg_sites &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">name =</span> <span class="st">&quot;seg_sites&quot;</span>, <span class="dt">transformation =</span> identity) {</span>
+<span id="cb1-11"><a href="#cb1-11"></a>  stat_segsites_class<span class="op">$</span><span class="kw">new</span>(name, transformation)</span>
+<span id="cb1-12"><a href="#cb1-12"></a>}</span></code></pre></div>
 <p>The calculate is called after the simulation with the following arguments:</p>
 <ul>
 <li>First, a list of segregating sites, where each entry of the list contains the segregating sites of a locus.</li>
@@ -335,20 +380,20 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="adding-a-constructor" class="section level3">
 <h3>Adding A Constructor</h3>
 <p>If the statistic has additional options that can be set on creation, overwrite the <code>initialize</code> function. Take, for example, a simplified version of <code>sumstat_file</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">stat_file_class &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;stat_file&quot;</span>, <span class="dt">inherit =</span> sumstat_class,</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="dt">private =</span> <span class="kw">list</span>(<span class="dt">folder =</span> <span class="ot">NULL</span>, <span class="dt">req_files =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="dt">public =</span> <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">initialize =</span> <span class="cf">function</span>(folder) {</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">      <span class="kw">dir.create</span>(folder, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">      private<span class="op">$</span>folder &lt;-<span class="st"> </span>folder</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">      super<span class="op">$</span><span class="kw">initialize</span>(<span class="st">&quot;file&quot;</span>, identity)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">    },</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">    <span class="dt">calculate =</span> <span class="cf">function</span>(seg_sites, trees, files, model, sim_task) {</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">      <span class="kw">file.copy</span>(files, private<span class="op">$</span>folder, <span class="dt">overwrite =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">      <span class="kw">file.path</span>(private<span class="op">$</span>folder, <span class="kw">basename</span>(files))</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">    }</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">  )</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>stat_file_class &lt;-<span class="st"> </span><span class="kw">R6Class</span>(<span class="st">&quot;stat_file&quot;</span>, <span class="dt">inherit =</span> sumstat_class,</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="dt">private =</span> <span class="kw">list</span>(<span class="dt">folder =</span> <span class="ot">NULL</span>, <span class="dt">req_files =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="dt">public =</span> <span class="kw">list</span>(</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="dt">initialize =</span> <span class="cf">function</span>(folder) {</span>
+<span id="cb2-5"><a href="#cb2-5"></a>      <span class="kw">dir.create</span>(folder, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb2-6"><a href="#cb2-6"></a>      private<span class="op">$</span>folder &lt;-<span class="st"> </span>folder</span>
+<span id="cb2-7"><a href="#cb2-7"></a>      super<span class="op">$</span><span class="kw">initialize</span>(<span class="st">&quot;file&quot;</span>, identity)</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    },</span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="dt">calculate =</span> <span class="cf">function</span>(seg_sites, trees, files, model, sim_task) {</span>
+<span id="cb2-10"><a href="#cb2-10"></a>      <span class="kw">file.copy</span>(files, private<span class="op">$</span>folder, <span class="dt">overwrite =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb2-11"><a href="#cb2-11"></a>      <span class="kw">file.path</span>(private<span class="op">$</span>folder, <span class="kw">basename</span>(files))</span>
+<span id="cb2-12"><a href="#cb2-12"></a>    }</span>
+<span id="cb2-13"><a href="#cb2-13"></a>  )</span>
+<span id="cb2-14"><a href="#cb2-14"></a>)</span></code></pre></div>
 <p>This function requires only the <code>folder</code> argument on initialization, which is the folder into which the files are copied. In the <code>initialize</code> function, the folder is created and its name is stored in a private variable. Finally, it calls the constructor of <code>sumstat_class</code> via <code>super$initialize</code>. This is essential when defining your own constructors! See the <code>?sumstat_class</code> for further details.</p>
 </div>
 </div>
