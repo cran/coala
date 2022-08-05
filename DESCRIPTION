@@ -1,5 +1,5 @@
 Package: coala
-Version: 0.6.1
+Version: 0.7.0
 License: MIT + file LICENSE
 Title: A Framework for Coalescent Simulation
 Authors@R: c(
@@ -23,8 +23,8 @@ Depends: R (>= 3.1.0)
 Imports: assertthat (>= 0.1), digest, methods, parallel, R6 (>= 2.0.1),
         Rcpp (>= 0.11.0), rehh (>= 3.0.0), scrm (>= 1.6.0-2), stats,
         utils
-Suggests: abc (>= 2.0), knitr, phyclust (>= 0.1-16), rmarkdown,
-        testthat (>= 0.11.0)
+Suggests: abc (>= 2.0), knitr, PopGenome (>= 2.1.0), phyclust (>=
+        0.1-16), rmarkdown, testthat (>= 0.11.0)
 LinkingTo: Rcpp, RcppArmadillo (>= 0.3.810.0)
 VignetteBuilder: knitr
 Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'model.R' 'feature.R'
@@ -33,8 +33,8 @@ Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'model.R' 'feature.R'
         'feature_pop_merge.R' 'feature_recombination.R'
         'feature_sample.R' 'feature_selection.R'
         'feature_size_change.R' 'feature_sumstats.R'
-        'feature_unphased.R' 'interface_abc.R' 'locus.R'
-        'model_build.R' 'model_check.R' 'model_examples.R'
+        'feature_unphased.R' 'import_popgenome.R' 'interface_abc.R'
+        'locus.R' 'model_build.R' 'model_check.R' 'model_examples.R'
         'model_getters.R' 'model_print.R' 'model_scale.R'
         'model_simulate.R' 'onLoad.R' 'parameter.R' 'parameter_prior.R'
         'parameter_variation.R' 'parameter_zero_inflation.R'
@@ -46,9 +46,9 @@ Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'model.R' 'feature.R'
         'sumstat_nucleotide_div.R' 'sumstat_omega.R'
         'sumstat_seg_sites.R' 'sumstat_sfs.R' 'sumstat_tajimas_d.R'
         'sumstat_trees.R' 'tools.R'
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.2
 NeedsCompilation: yes
-Packaged: 2022-02-14 14:43:03 UTC; dirk
+Packaged: 2022-07-22 13:37:24 UTC; dirk
 Maintainer: Dirk Metzler <metzler@bio.lmu.de>
 Repository: CRAN
-Date/Publication: 2022-02-14 15:40:06 UTC
+Date/Publication: 2022-08-05 16:30:02 UTC

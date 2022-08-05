@@ -56,6 +56,101 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
 
 
 
@@ -253,12 +348,39 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Importing Genetic Data into Coala</h1>
 <h4 class="author">Paul Staab</h4>
-<h4 class="date">coala 0.6.1</h4>
+<h4 class="date">coala 0.7.0</h4>
 
 
 
-<p>The preferred way to import genetic data in coala is via the Package <code>PopGenome</code>.</p>
-<p>An alternative is to import your data and convert it into a <code>seg_sites</code> object manually. Please refer to the <code>create_segsites</code> section in <code>coala</code>’s documentation for details.</p>
+<p>While <code>coala</code> primiary focuses on simulation of data, it also offers to calculate summary statsitcs from real data. This is particularly useful when comparing the statistics of real and simulated data.</p>
+<p>Rather than offering functions to import data directly, coala can convert the internal formats of other R packages into its own format. Currently, the <code>PopGenome</code> package is supported, but we plan to support <code>ape</code> and <code>pegas</code> in the future.</p>
+<div id="importing-data-from-popgenome" class="section level2">
+<h2>Importing Data from PopGenome</h2>
+<p><code>PopGenome</code> provides functions for reading various data formats, including <code>vcf</code> and <code>fasta</code>. Please refer to its documentation for detailed instructions. As an example, we will read sequence data from a short fasta file that is included in coala:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(PopGenome))</span>
+<span id="cb1-2"><a href="#cb1-2"></a>fasta &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;example_fasta_files&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;coala&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>data_pg &lt;-<span class="st"> </span><span class="kw">readData</span>(fasta, <span class="dt">progress_bar_switch =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>data_pg &lt;-<span class="st"> </span><span class="kw">set.outgroup</span>(data_pg, <span class="kw">c</span>(<span class="st">&quot;Individual_Out-1&quot;</span>, <span class="st">&quot;Individual_Out-2&quot;</span>))</span>
+<span id="cb1-5"><a href="#cb1-5"></a>individuals &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">paste0</span>(<span class="st">&quot;Individual_1-&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>), <span class="kw">paste0</span>(<span class="st">&quot;Individual_2-&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>))</span>
+<span id="cb1-6"><a href="#cb1-6"></a>data_pg &lt;-<span class="st"> </span><span class="kw">set.populations</span>(data_pg, individuals)</span></code></pre></div>
+<p>Here the sequences originate from two population and an outgroup. The outgroup is required for most summary statistics.</p>
+<p>We can now convert <code>data_pg</code> using the <code>as.segsites</code> function:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(coala)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>segsites &lt;-<span class="st"> </span><span class="kw">as.segsites</span>(data_pg)</span></code></pre></div>
+<p>Next, we calculate summary statistics using <code>calc_sumstats_from_data</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">2</span>), <span class="dv">1</span>, <span class="dv">25</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dv">5</span>) <span class="op">+</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span><span class="kw">feat_outgroup</span>(<span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="st">  </span><span class="kw">sumstat_sfs</span>(<span class="dt">population =</span> <span class="dv">1</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>stats &lt;-<span class="st"> </span><span class="kw">calc_sumstats_from_data</span>(model, segsites)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>stats<span class="op">$</span>sfs</span></code></pre></div>
+<pre><code>## [1] 5 5 2 1</code></pre>
+<p>Alternatively, it is also possible to pass the <code>data_pg</code> object directly to <code>calc_sumstats_from_data</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>stats &lt;-<span class="st"> </span><span class="kw">calc_sumstats_from_data</span>(model, data_pg)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>stats<span class="op">$</span>sfs</span></code></pre></div>
+<pre><code>## [1] 5 5 2 1</code></pre>
+<p>Please refer to the help pages for <code>as.segsites</code> and <code>calc_sumstats_from_data</code> for additional information.</p>
+</div>
 
 
 

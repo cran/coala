@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </style>
 
 
+
 <style type="text/css">
   code {
     white-space: pre;
@@ -347,7 +348,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Using External Simulators</h1>
 <h4 class="author">Paul Staab</h4>
-<h4 class="date">coala 0.6.1</h4>
+<h4 class="date">coala 0.7.0</h4>
 
 
 
@@ -411,9 +412,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(coala)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw">list_simulators</span>()</span></code></pre></div>
 <pre><code>##     name priority                            info
-## 2   scrm      400               version : 1.7.4-0
-## 1     ms      300       version : phyclust_0.1.30
-## 3 seqgen      100 binary : /home/dirk/bin/seq-gen</code></pre>
+## 1   scrm      400               version : 1.7.4-0
+## 2 seqgen      100 binary : /home/dirk/bin/seq-gen</code></pre>
 </div>
 <div id="priority" class="section level1">
 <h1>Priority</h1>
@@ -422,9 +422,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dv">5</span>, <span class="dt">model =</span> <span class="st">&quot;IFS&quot;</span>) <span class="op">+</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span><span class="kw">sumstat_nucleotide_div</span>()</span>
 <span id="cb3-4"><a href="#cb3-4"></a><span class="kw">check_model</span>(model)</span></code></pre></div>
-<pre><code>## ms : OK
-## 
-## scrm : OK
+<pre><code>## scrm : OK
 ## 
 ## seqgen : Error : seq-gen can not simulate an IFS model
 ## </code></pre>
