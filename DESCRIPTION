@@ -1,5 +1,5 @@
 Package: coala
-Version: 0.7.0
+Version: 0.7.1
 License: MIT + file LICENSE
 Title: A Framework for Coalescent Simulation
 Authors@R: c(
@@ -19,6 +19,10 @@ Description: Coalescent simulators can rapidly simulate biological sequences
     It relies on existing simulators for doing the simulation, and currently
     supports the programs 'ms', 'msms' and 'scrm'. It also supports finite-sites
     mutation models by combining the simulators with the program 'seq-gen'.
+    Coala provides functions for calculating certain summary statistics, which
+    can also be applied to actual biological data.
+    One possibility to import data is through the 'PopGenome' package
+    (<https://github.com/pievos101/PopGenome>).
 Depends: R (>= 3.1.0)
 Imports: assertthat (>= 0.1), digest, methods, parallel, R6 (>= 2.0.1),
         Rcpp (>= 0.11.0), rehh (>= 3.0.0), scrm (>= 1.6.0-2), stats,
@@ -46,9 +50,9 @@ Collate: 'RcppExports.R' 'cache.R' 'coala.R' 'model.R' 'feature.R'
         'sumstat_nucleotide_div.R' 'sumstat_omega.R'
         'sumstat_seg_sites.R' 'sumstat_sfs.R' 'sumstat_tajimas_d.R'
         'sumstat_trees.R' 'tools.R'
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 NeedsCompilation: yes
-Packaged: 2022-07-22 13:37:24 UTC; dirk
+Packaged: 2022-12-12 17:09:44 UTC; dirk
 Maintainer: Dirk Metzler <metzler@bio.lmu.de>
 Repository: CRAN
-Date/Publication: 2022-08-05 16:30:02 UTC
+Date/Publication: 2023-01-05 15:20:14 UTC

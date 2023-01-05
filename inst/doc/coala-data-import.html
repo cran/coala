@@ -10,7 +10,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Paul Staab" />
+<meta name="author" content="Paul Staab, Dirk Metzler" />
 
 
 <title>Importing Genetic Data into Coala</title>
@@ -136,13 +136,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -347,8 +354,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Importing Genetic Data into Coala</h1>
-<h4 class="author">Paul Staab</h4>
-<h4 class="date">coala 0.7.0</h4>
+<h4 class="author">Paul Staab, Dirk Metzler</h4>
+<h4 class="date">coala 0.7.1</h4>
 
 
 
@@ -374,11 +381,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb3-4"><a href="#cb3-4"></a><span class="st">  </span><span class="kw">sumstat_sfs</span>(<span class="dt">population =</span> <span class="dv">1</span>)</span>
 <span id="cb3-5"><a href="#cb3-5"></a>stats &lt;-<span class="st"> </span><span class="kw">calc_sumstats_from_data</span>(model, segsites)</span>
 <span id="cb3-6"><a href="#cb3-6"></a>stats<span class="op">$</span>sfs</span></code></pre></div>
-<pre><code>## [1] 5 5 2 1</code></pre>
 <p>Alternatively, it is also possible to pass the <code>data_pg</code> object directly to <code>calc_sumstats_from_data</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>stats &lt;-<span class="st"> </span><span class="kw">calc_sumstats_from_data</span>(model, data_pg)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>stats<span class="op">$</span>sfs</span></code></pre></div>
-<pre><code>## [1] 5 5 2 1</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>stats &lt;-<span class="st"> </span><span class="kw">calc_sumstats_from_data</span>(model, data_pg)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>stats<span class="op">$</span>sfs</span></code></pre></div>
 <p>Please refer to the help pages for <code>as.segsites</code> and <code>calc_sumstats_from_data</code> for additional information.</p>
 </div>
 

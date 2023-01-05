@@ -1,0 +1,11 @@
+
+correct specifications of parameters, e.g. migration rates in help pages
+
+improve function conv_seq_to_segsites in src/parse_seqgen_output.cpp. Is it possible to count e.g. sites with three nucleotide types like two segregating sites?
+also in parser function for seqgen output
+
+options to ignore positions with more than two sites
+
+convert sequences into segsites without outgroup -> folded JSFS
+
+Make interfaces to ape data, maybe also seqinr and others
