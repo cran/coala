@@ -6,7 +6,7 @@
 #' @include model.R
 #' @keywords internal
 #' @export
-sumstat_class <- R6Class("sumstat", inherit = model_part,
+sumstat_class <- R6::R6Class("sumstat", inherit = model_part,
   private = list(
     name = NA,
     req_files = FALSE,
@@ -15,29 +15,85 @@ sumstat_class <- R6Class("sumstat", inherit = model_part,
     transformation = NULL
   ),
   public = list(
-    initialize = function(name, transformation) {
-      assert_that(is.character(name))
-      assert_that(length(name) == 1)
-      private$name <- name
+      #' @description
+      #' Initialization of $sumstat
+      #'
+      #' @param name the name to be used for this statistic
+      #' @param transformation transformation to be used for this statistic
+      #' @return NULL
+      initialize = function(name, transformation) {
+          assert_that(is.character(name))
+          assert_that(length(name) == 1)
+          private$name <- name
+          assert_that(is.function(transformation))
+          private$transformation <- transformation
+      },
 
-      assert_that(is.function(transformation))
-      private$transformation <- transformation
-    },
-    calculate = function(seg_sites, trees, files, model) {
-      stop("Overwrite this function with the calculation of the statistic.")
-    },
-    check = function(model) {
-      # Optional functions that checks if a model is compatible with the stat.
-      # Should throw an informative error if not.
-      # This gets executed before the stat is added to the model.
-      invisible(TRUE)
-    },
-    get_name = function() private$name,
-    requires_files = function() private$req_files,
-    requires_segsites = function() private$req_segsites,
-    requires_trees = function() private$req_trees,
-    print = function() cat(class(self)[1], "\n"),
-    transform = function(x) private$transformation(x)
+      #' @description
+      #' This function must be overwritten in the derived class
+      #'
+      #' @param seg_sites   seg_sites object containing the segregating sites
+      #' @param trees       trees
+      #' @param files       files
+      #' @param model       demographic model
+      #'
+      #' @return NULL
+      calculate = function(seg_sites, trees, files, model) {
+          stop("Overwrite this function with the calculation of the statistic.")
+      },
+      
+      #' @description
+      #' Optional functions that checks if a model is compatible with the stat.
+      #'
+      #' In a derived class this can be overwritten by a function that throws
+      #' an informative error if the model is incompatible with the statistic
+      #' The function is executed before the statistic is added to the model.
+      #' 
+      #' @param model       demographic model
+      #'
+      #' @return invisible TRUE
+      check = function(model) {
+                                        # Optional functions that checks if a model is compatible with the stat.
+                                        # Should throw an informative error if not.
+                                        # This gets executed before the stat is added to the model.
+          invisible(TRUE)
+      },
+      
+      #' @description
+      #' function to read the private attribute name
+      #'
+      #' @return name of the statistic
+      get_name = function() private$name,
+      
+      #' @description
+      #' function to check whether files are required by this statsitic
+      #'
+      #' @return req_files, which is TRUE or FALSE and indicates whether files are required by this statsitic
+      requires_files = function() private$req_files,
+      
+      #' @description
+      #' function to check whether segregating sites are required by this statsitic
+      #'
+      #' @return req_segsites, which is TRUE or FALSE and indicates whether segregating sites are required by this statsiti
+      requires_segsites = function() private$req_segsites,
+  
+      #' @description
+      #' function to check whether trees are required by this statsitic
+      #'
+      #' @return req_trees, which is TRUE or FALSE and indicates whether trees are required by this statsitic
+      requires_trees = function() private$req_trees,
+      
+      #' @description
+      #' function to print the class of the statistic
+      print = function() cat(class(self)[1], "\n"),
+      
+      #' @description
+      #' Transformation that is applied to the statistic
+      #'
+      #' @param x untransformed value
+      #'
+      #' @return transformed value
+      transform = function(x) private$transformation(x)
   )
 )
 
@@ -49,23 +105,24 @@ is.sum_stat <- function(sumstat) inherits(sumstat, "sumstat")
 create_sumstat_container <- function() list()
 
 
-# Add a summary statistic to a model
-add_to_model.sumstat <- function(sum_stat, model, feat_name) {
-  sum_stat$check(model)
+                                        # Add a summary statistic to a model
+#' @export
+add_to_model.sumstat <- function(x, model, x_name) {
+  x$check(model)
 
-  if (sum_stat$get_name() %in% names(model$sum_stats))
-    stop("Can not add ", feat_name, " to model: ",
-         "There is already a statistic with name ", sum_stat$get_name())
+  if (x$get_name() %in% names(model$sum_stats))
+    stop("Can not add ", x_name, " to model: ",
+         "There is already a statistic with name ", x$get_name())
 
-  if (sum_stat$requires_files() && !requires_files(model))
+  if (x$requires_files() && !requires_files(model))
     model <- model + files_feat_class$new()
-  if (sum_stat$requires_segsites() && !requires_segsites(model))
+  if (x$requires_segsites() && !requires_segsites(model))
     model <- model + segsites_feat_class$new()
-  if (sum_stat$requires_trees() && !requires_trees(model))
+  if (x$requires_trees() && !requires_trees(model))
     model <- model + trees_feat_class$new()
 
   # Save the statistic
-  model$sum_stats[[sum_stat$get_name()]] <- sum_stat
+  model$sum_stats[[x$get_name()]] <- x
 
   # Update cache
   model$id <- get_id()

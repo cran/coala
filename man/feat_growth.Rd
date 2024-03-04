@@ -29,7 +29,7 @@ the first locus (that is locus 2 - 12).}
 }
 \value{
 The feature, which can be added to a model created with
-  \code{\link{coal_model}} using \code{+}.
+\code{\link{coal_model}} using \code{+}.
 }
 \description{
 This feature changes the growth factor of a population at given
@@ -55,7 +55,7 @@ simulate(model)
 }
 \seealso{
 For instantaneous population size
-         changes: \code{\link{feat_size_change}}
+changes: \code{\link{feat_size_change}}
 
 For creating a model: \code{\link{coal_model}}
 
@@ -66,7 +66,6 @@ Other features:
 \code{\link{feat_outgroup}()},
 \code{\link{feat_pop_merge}()},
 \code{\link{feat_recombination}()},
-\code{\link{feat_sample}()},
 \code{\link{feat_selection}()},
 \code{\link{feat_size_change}()},
 \code{\link{feat_unphased}()}

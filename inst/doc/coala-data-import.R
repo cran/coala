@@ -6,7 +6,7 @@
 #  individuals <- list(paste0("Individual_1-", 1:5), paste0("Individual_2-", 1:5))
 #  data_pg <- set.populations(data_pg, individuals)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  library(coala)
 #  segsites <- as.segsites(data_pg)
 

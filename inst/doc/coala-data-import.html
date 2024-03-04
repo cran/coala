@@ -10,7 +10,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Paul Staab, Dirk Metzler" />
 
 
 <title>Importing Genetic Data into Coala</title>
@@ -25,22 +24,6 @@ document.addEventListener('DOMContentLoaded', function(e) {
     if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
     a = h.attributes;
     while (a.length > 0) h.removeAttribute(a[0].name);
-  }
-});
-</script>
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
-document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
   }
 });
 </script>
@@ -68,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
@@ -102,7 +86,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +99,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -354,37 +338,50 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Importing Genetic Data into Coala</h1>
-<h4 class="author">Paul Staab, Dirk Metzler</h4>
-<h4 class="date">coala 0.7.1</h4>
 
 
 
-<p>While <code>coala</code> primiary focuses on simulation of data, it also offers to calculate summary statsitcs from real data. This is particularly useful when comparing the statistics of real and simulated data.</p>
-<p>Rather than offering functions to import data directly, coala can convert the internal formats of other R packages into its own format. Currently, the <code>PopGenome</code> package is supported, but we plan to support <code>ape</code> and <code>pegas</code> in the future.</p>
+<p>While <code>coala</code> primiary focuses on simulation of data, it
+also offers to calculate summary statsitcs from real data. This is
+particularly useful when comparing the statistics of real and simulated
+data.</p>
+<p>Rather than offering functions to import data directly, coala can
+convert the internal formats of other R packages into its own format.
+Currently, the <code>PopGenome</code> package is supported, but we plan
+to support <code>ape</code> and <code>pegas</code> in the future.</p>
 <div id="importing-data-from-popgenome" class="section level2">
 <h2>Importing Data from PopGenome</h2>
-<p><code>PopGenome</code> provides functions for reading various data formats, including <code>vcf</code> and <code>fasta</code>. Please refer to its documentation for detailed instructions. As an example, we will read sequence data from a short fasta file that is included in coala:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">library</span>(PopGenome))</span>
-<span id="cb1-2"><a href="#cb1-2"></a>fasta &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;example_fasta_files&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;coala&quot;</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>data_pg &lt;-<span class="st"> </span><span class="kw">readData</span>(fasta, <span class="dt">progress_bar_switch =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>data_pg &lt;-<span class="st"> </span><span class="kw">set.outgroup</span>(data_pg, <span class="kw">c</span>(<span class="st">&quot;Individual_Out-1&quot;</span>, <span class="st">&quot;Individual_Out-2&quot;</span>))</span>
-<span id="cb1-5"><a href="#cb1-5"></a>individuals &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">paste0</span>(<span class="st">&quot;Individual_1-&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>), <span class="kw">paste0</span>(<span class="st">&quot;Individual_2-&quot;</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>))</span>
-<span id="cb1-6"><a href="#cb1-6"></a>data_pg &lt;-<span class="st"> </span><span class="kw">set.populations</span>(data_pg, individuals)</span></code></pre></div>
-<p>Here the sequences originate from two population and an outgroup. The outgroup is required for most summary statistics.</p>
-<p>We can now convert <code>data_pg</code> using the <code>as.segsites</code> function:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(coala)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>segsites &lt;-<span class="st"> </span><span class="kw">as.segsites</span>(data_pg)</span></code></pre></div>
-<p>Next, we calculate summary statistics using <code>calc_sumstats_from_data</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>model &lt;-<span class="st"> </span><span class="kw">coal_model</span>(<span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">2</span>), <span class="dv">1</span>, <span class="dv">25</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw">feat_mutation</span>(<span class="dv">5</span>) <span class="op">+</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span><span class="kw">feat_outgroup</span>(<span class="dv">3</span>) <span class="op">+</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="st">  </span><span class="kw">sumstat_sfs</span>(<span class="dt">population =</span> <span class="dv">1</span>)</span>
-<span id="cb3-5"><a href="#cb3-5"></a>stats &lt;-<span class="st"> </span><span class="kw">calc_sumstats_from_data</span>(model, segsites)</span>
-<span id="cb3-6"><a href="#cb3-6"></a>stats<span class="op">$</span>sfs</span></code></pre></div>
-<p>Alternatively, it is also possible to pass the <code>data_pg</code> object directly to <code>calc_sumstats_from_data</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>stats &lt;-<span class="st"> </span><span class="kw">calc_sumstats_from_data</span>(model, data_pg)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>stats<span class="op">$</span>sfs</span></code></pre></div>
-<p>Please refer to the help pages for <code>as.segsites</code> and <code>calc_sumstats_from_data</code> for additional information.</p>
+<p><code>PopGenome</code> provides functions for reading various data
+formats, including <code>vcf</code> and <code>fasta</code>. Please refer
+to its documentation for detailed instructions. As an example, we will
+read sequence data from a short fasta file that is included in
+coala:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(PopGenome))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>fasta <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;example_fasta_files&quot;</span>, <span class="at">package =</span> <span class="st">&quot;coala&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data_pg <span class="ot">&lt;-</span> <span class="fu">readData</span>(fasta, <span class="at">progress_bar_switch =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>data_pg <span class="ot">&lt;-</span> <span class="fu">set.outgroup</span>(data_pg, <span class="fu">c</span>(<span class="st">&quot;Individual_Out-1&quot;</span>, <span class="st">&quot;Individual_Out-2&quot;</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>individuals <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">paste0</span>(<span class="st">&quot;Individual_1-&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>), <span class="fu">paste0</span>(<span class="st">&quot;Individual_2-&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data_pg <span class="ot">&lt;-</span> <span class="fu">set.populations</span>(data_pg, individuals)</span></code></pre></div>
+<p>Here the sequences originate from two population and an outgroup. The
+outgroup is required for most summary statistics.</p>
+<p>We can now convert <code>data_pg</code> using the
+<code>as.segsites</code> function:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(coala)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>segsites <span class="ot">&lt;-</span> <span class="fu">as.segsites</span>(data_pg)</span></code></pre></div>
+<p>Next, we calculate summary statistics using
+<code>calc_sumstats_from_data</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">coal_model</span>(<span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">2</span>), <span class="dv">1</span>, <span class="dv">25</span>) <span class="sc">+</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">feat_mutation</span>(<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">feat_outgroup</span>(<span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sumstat_sfs</span>(<span class="at">population =</span> <span class="dv">1</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>stats <span class="ot">&lt;-</span> <span class="fu">calc_sumstats_from_data</span>(model, segsites)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>stats<span class="sc">$</span>sfs</span></code></pre></div>
+<p>Alternatively, it is also possible to pass the <code>data_pg</code>
+object directly to <code>calc_sumstats_from_data</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>stats <span class="ot">&lt;-</span> <span class="fu">calc_sumstats_from_data</span>(model, data_pg)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>stats<span class="sc">$</span>sfs</span></code></pre></div>
+<p>Please refer to the help pages for <code>as.segsites</code> and
+<code>calc_sumstats_from_data</code> for additional information.</p>
 </div>
 
 

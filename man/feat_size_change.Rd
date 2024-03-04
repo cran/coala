@@ -27,10 +27,10 @@ this argument is \code{c(2, 3)}, than the feature is used for all but
 the first locus (that is locus 2 - 12).}
 }
 \value{
-The feature, which can be added to a model using `+`.
+The feature, which can be added to a model using \code{+}.
 
 The feature, which can be added to a model created with
-  \code{\link{coal_model}} using \code{+}.
+\code{\link{coal_model}} using \code{+}.
 }
 \description{
 This feature changes the effective population size of one
@@ -69,7 +69,6 @@ Other features:
 \code{\link{feat_outgroup}()},
 \code{\link{feat_pop_merge}()},
 \code{\link{feat_recombination}()},
-\code{\link{feat_sample}()},
 \code{\link{feat_selection}()},
 \code{\link{feat_unphased}()}
 }

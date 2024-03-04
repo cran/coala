@@ -7,7 +7,7 @@
 feat_outgroup(population, locus_group = "all")
 }
 \arguments{
-\item{population}{The population that is marked as outgroup. 
+\item{population}{The population that is marked as outgroup.
 If finite-sites mutation models are used, the last population must be
 specified as outgroup.}
 
@@ -23,7 +23,7 @@ the first locus (that is locus 2 - 12).}
 }
 \value{
 The feature, which can be added to a model created with
-  \code{\link{coal_model}} using \code{+}.
+\code{\link{coal_model}} using \code{+}.
 }
 \description{
 This feature declares an existing population as outgroup. Outgroups are used
@@ -50,7 +50,6 @@ Other features:
 \code{\link{feat_mutation}()},
 \code{\link{feat_pop_merge}()},
 \code{\link{feat_recombination}()},
-\code{\link{feat_sample}()},
 \code{\link{feat_selection}()},
 \code{\link{feat_size_change}()},
 \code{\link{feat_unphased}()}

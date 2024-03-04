@@ -24,8 +24,8 @@ model <- coal_model(sample_size = c(5, 2, 0), loci_number = 1) +
 
 ## -----------------------------------------------------------------------------
 model <- coal_model(3, 1) +
-  feat_mutation(rate = 1) +
-  sumstat_seg_sites()
+   feat_mutation(rate = 1) +
+   sumstat_seg_sites()
 model
 
 ## ----echo=FALSE---------------------------------------------------------------
